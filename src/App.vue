@@ -24,6 +24,7 @@
 import TheMenu from "./components/TheMenu.vue";
 import TheTopTask from "./components/TheTopTask.vue";
 import TaskList from "./components/TaskList.vue";
+import { v4 as uuid } from "@lukeed/uuid";
 
 export default {
   components: {
@@ -33,19 +34,14 @@ export default {
   },
   data() {
     return {
-      taskID: 0,
       tasks: [],
     };
   },
   methods: {
-    getAnID() {
-      this.taskID++;
-      return this.taskID;
-    },
     addTask({ name, start, end, durations }) {
       //Enregistrement de la tâche
       this.tasks.unshift({
-        id: this.getAnID(),
+        id: uuid(),
         name: name,
         startTime: start,
         endTime: end,

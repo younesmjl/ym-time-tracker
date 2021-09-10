@@ -56,6 +56,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@lukeed/csprng@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@lukeed/csprng@npm:1.0.0"
+  checksum: 331cdeb48f716c5d905d1ff7c0df36ff2cc294bce7e266196d75d130609685d6d37f6f8ac683b4c9bfa6a98cd4884f4e974e810a11c291d98b4af4eefa15c3b5
+  languageName: node
+  linkType: hard
+
+"@lukeed/uuid@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@lukeed/uuid@npm:2.0.0"
+  dependencies:
+    "@lukeed/csprng": ^1.0.0
+  checksum: 7d55c0a9f26db9f63728db46f74948cf539f2690556cb30a9b21eb86d7ef48f184d4bfe808975e22fba0f493f5742f1e9adf97af9efe456049a6f82be83c71f6
+  languageName: node
+  linkType: hard
+
 "@npmcli/fs@npm:^1.0.0":
   version: 1.0.0
   resolution: "@npmcli/fs@npm:1.0.0"
@@ -1613,6 +1629,7 @@ resolve@^1.19.0:
   version: 0.0.0-use.local
   resolution: "vite-project@workspace:."
   dependencies:
+    "@lukeed/uuid": ^2.0.0
     "@vitejs/plugin-vue": ^1.1.5
     "@vue/compiler-sfc": ^3.0.5
     element-plus: ^1.0.2-beta.33
