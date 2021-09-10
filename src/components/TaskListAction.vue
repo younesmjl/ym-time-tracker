@@ -23,7 +23,7 @@ export default {
   emits: ["restart", "delete"],
   props: {
     taskID: {
-      type: Number,
+      type: String,
       required: true,
     },
     taskName: {
