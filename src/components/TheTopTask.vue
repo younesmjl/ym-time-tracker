@@ -69,7 +69,6 @@ export default {
     startTask(eventTaskName, restart) {
       //Gestion du boutons qui permet de relancer une tâche
       if (this.taskname == "" && eventTaskName !== undefined && restart) {
-        console.log("App || startTask || event: ", eventTaskName);
         this.taskname = eventTaskName;
       }
 
