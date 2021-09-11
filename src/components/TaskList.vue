@@ -1,5 +1,6 @@
 <template>
   <el-table
+    v-loading="areTaskLoading"
     :data="tasks"
     row-key="id"
     empty-text="Aucune tâche"
@@ -50,6 +51,10 @@ export default {
     tasks: {
       type: Array,
       default: [],
+    },
+    areTaskLoading: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

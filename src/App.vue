@@ -12,6 +12,7 @@
       <el-main>
         <TaskList
           :tasks="tasks"
+          :areTaskLoading="areTaskLoading"
           @removeTask="deleteTask($event)"
           @restartTask="sendRestartTask($event)"
         />
@@ -25,6 +26,7 @@ import TheMenu from "./components/TheMenu.vue";
 import TheTopTask from "./components/TheTopTask.vue";
 import TaskList from "./components/TaskList.vue";
 import { v4 as uuid } from "@lukeed/uuid";
+import { readAllTasks, updateAllTasks } from "./services/TaskService";
 
 export default {
   components: {
@@ -35,11 +37,12 @@ export default {
   data() {
     return {
       tasks: [],
+      areTaskLoading: true,
     };
   },
   methods: {
-    addTask({ name, start, end, durations }) {
-      //Enregistrement de la tâche
+    async addTask({ name, start, end, durations }) {
+      //Enregistrement de la tâche en local
       this.tasks.unshift({
         id: uuid(),
         name: name,
@@ -48,14 +51,41 @@ export default {
         dayDate: new Intl.DateTimeFormat("fr-FR").format(new Date()),
         durations: durations,
       });
+
+      //Ajout de la tâche sur l'API
+      try {
+        await updateAllTasks(this.tasks);
+      } catch (error) {
+        console.log(error);
+      }
     },
     sendRestartTask(taskName) {
       this.$refs.TheTopTask.toggleTask(taskName, true);
     },
-    deleteTask(idTasks) {
+    async deleteTask(idTasks) {
+      //On supprime la taches de l'Array tasks en filtrant sur l'id de le tâches
       let newTasks = this.tasks.filter((tasks) => tasks.id !== idTasks);
+
+      //On met à jour les tâches en local
       this.tasks = newTasks;
+
+      //On met à jour les tâches sur l'API
+      try {
+        await updateAllTasks(this.tasks);
+      } catch (error) {
+        console.log(error);
+      }
     },
+  },
+
+  async created() {
+    try {
+      //Récupération de toutes les tâches
+      this.tasks = await readAllTasks();
+    } catch (error) {
+      console.log(error);
+    }
+    this.areTaskLoading = false;
   },
 };
 </script>
