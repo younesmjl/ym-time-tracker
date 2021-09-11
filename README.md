@@ -1,4 +1,4 @@
-# vue3-VueTracker
+Vue3-VueTracker
 
 ## Project setup
 ```
