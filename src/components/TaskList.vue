@@ -6,8 +6,14 @@
     empty-text="Aucune tâche"
     stripe
     style="width: 100%"
+    ref="table"
   >
-    <el-table-column prop="name" label="Tâche" width="250"> </el-table-column>
+    <el-table-column
+      prop="name"
+      sort-by="startTime"
+      label="Tâche"
+      width="250"
+    />
 
     <el-table-column align="right" prop="dayDate" label="Durée" width="100">
       <template #header></template>
@@ -43,7 +49,7 @@
 <script>
 import TaskListAction from "./TaskListAction.vue";
 export default {
-  emits: ["removeTask", "restartTask"],
+  emits: ["restartTask", "removeTask"],
   components: {
     TaskListAction,
   },
@@ -66,6 +72,19 @@ export default {
       }),
     };
   },
+  watch: {
+    tasks: {
+      /*
+      Pour la modif d'un array ou d'un objet, on a besoin l'option : "deep:true".
+      L'objet watch regarde, si la propriété est réinitialiser.
+      Dans notre cas, tasks n'est pas réinitialiser mais juste mis à jour via this.tasks.unshift() 
+      */
+      deep: true,
+      handler() {
+        this.sortByName();
+      },
+    },
+  },
   methods: {
     handleRestart(event) {
       this.$emit("restartTask", event);
@@ -76,6 +95,15 @@ export default {
     formatTimestamp(ts) {
       return this.formatter.format(ts);
     },
+    sortByName() {
+      //gestion des paramètres dans les urls - Vue Router
+      const sortBy =
+        this.$route.query.sortBy === "ascending" ? "ascending" : "descending";
+      this.$refs.table.sort("name", sortBy);
+    },
+  },
+  mounted() {
+    this.sortByName();
   },
 };
 </script>

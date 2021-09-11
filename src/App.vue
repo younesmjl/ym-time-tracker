@@ -10,12 +10,12 @@
       </el-header>
 
       <el-main>
-        <TaskList
-          :tasks="tasks"
+        <router-view
+          :tasks="tasks || []"
           :areTaskLoading="areTaskLoading"
-          @removeTask="deleteTask($event)"
           @restartTask="sendRestartTask($event)"
-        />
+          @removeTask="deleteTask($event)"
+        ></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -24,7 +24,7 @@
 <script>
 import TheMenu from "./components/TheMenu.vue";
 import TheTopTask from "./components/TheTopTask.vue";
-import TaskList from "./components/TaskList.vue";
+
 import { v4 as uuid } from "@lukeed/uuid";
 import { readAllTasks, updateAllTasks } from "./services/TaskService";
 
@@ -32,7 +32,6 @@ export default {
   components: {
     TheMenu,
     TheTopTask,
-    TaskList,
   },
   data() {
     return {
@@ -64,7 +63,6 @@ export default {
       try {
         await updateAllTasks(this.tasks);
       } catch (error) {
-        console.log(error);
         this.notifyTasks("Synchronisation des tâches impossible");
       }
     },
@@ -82,7 +80,6 @@ export default {
       try {
         await updateAllTasks(this.tasks);
       } catch (error) {
-        console.log(error);
         this.notifyTasks("Synchronisation des tâches impossible");
       }
     },
@@ -93,7 +90,6 @@ export default {
       //Récupération de toutes les tâches
       this.tasks = await readAllTasks();
     } catch (error) {
-      console.log(error);
       this.notifyTasks("Aucune tâche n'a pu être récupérée");
     }
     this.areTaskLoading = false;
