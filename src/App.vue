@@ -41,6 +41,14 @@ export default {
     };
   },
   methods: {
+    notifyTasks(message) {
+      return this.$notify.error({
+        title: "Mode hors-ligne",
+        message,
+        type: "danger",
+        offset: 60,
+      });
+    },
     async addTask({ name, start, end, durations }) {
       //Enregistrement de la tâche en local
       this.tasks.unshift({
@@ -57,6 +65,7 @@ export default {
         await updateAllTasks(this.tasks);
       } catch (error) {
         console.log(error);
+        this.notifyTasks("Synchronisation des tâches impossible");
       }
     },
     sendRestartTask(taskName) {
@@ -74,6 +83,7 @@ export default {
         await updateAllTasks(this.tasks);
       } catch (error) {
         console.log(error);
+        this.notifyTasks("Synchronisation des tâches impossible");
       }
     },
   },
@@ -84,6 +94,7 @@ export default {
       this.tasks = await readAllTasks();
     } catch (error) {
       console.log(error);
+      this.notifyTasks("Aucune tâche n'a pu être récupérée");
     }
     this.areTaskLoading = false;
   },
@@ -93,6 +104,7 @@ export default {
 <style lang="scss">
 body {
   margin: 0;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
 }
 #app {
   position: absolute;
@@ -100,12 +112,13 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
+
 .mainContainer {
   height: 100%;
 }

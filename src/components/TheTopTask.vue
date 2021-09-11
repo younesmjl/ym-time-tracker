@@ -38,7 +38,7 @@ export default {
       startTime: null,
       nowTime: null,
       intervalEverySecond: null,
-      //errorMsg:null,
+      errorMsg: null,
     };
   },
 
@@ -61,17 +61,11 @@ export default {
 
   //Les méthodes
   methods: {
-    getAnID() {
-      this.taskID++;
-      return this.taskID;
-    },
-
     startTask(eventTaskName, restart) {
       //Gestion du boutons qui permet de relancer une tâche
       if (this.taskname == "" && eventTaskName !== undefined && restart) {
         this.taskname = eventTaskName;
       }
-
       //Vérifications
       if (this.taskname.length === 0) {
         this.errorMsg = "Le nom d'une tâche ne peut pas être vide";
@@ -181,6 +175,22 @@ export default {
         }, 1000);
       } else {
         clearInterval(this.intervalEverySecond);
+      }
+    },
+    errorMsg(newVal) {
+      if (newVal !== null) {
+        this.$notify({
+          title: "Attention",
+          message: this.errorMsg,
+          type: "warning",
+          offset: 60,
+          onClose: () => {
+            //Pour qu la même erreur puisse de nouveau être possible
+            if (this.errorMsg === newVal) {
+              this.errorMsg = null;
+            }
+          },
+        });
       }
     },
   },
