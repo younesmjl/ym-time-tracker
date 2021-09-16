@@ -1,31 +1,13 @@
+//import function vue js
 import { createApp } from "vue";
-import * as VueRouter from "vue-router";
+
+//Component who contains app vue
 import App from "./App.vue";
-import Home from "./pages/Home.vue";
-import Settings from "./pages/Settings.vue";
+//Router and routes
+import router from "./router/index";
+//UI components
 import ElementPlus from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
-
-//Routes for application
-const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-  },
-  {
-    path: "/settings",
-    name: "Settings",
-    component: Settings,
-  },
-];
-
-//Création du router
-const router = VueRouter.createRouter({
-  // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-  history: VueRouter.createWebHistory(),
-  routes, // short for `routes: routes`
-});
 
 const app = createApp(App);
 app.use(router);
