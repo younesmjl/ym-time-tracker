@@ -1,4 +1,9 @@
 <template>
+  <el-select v-model="sortBy" placeholder="Select">
+    <el-option label="La plus rescente d'abord" :value="defaultSortBy">
+    </el-option>
+    <el-option label="La plus ancienne d'abord" value="ascending"> </el-option>
+  </el-select>
   <el-table
     v-loading="areTaskLoading"
     :data="tasks"
@@ -70,9 +75,20 @@ export default {
         minute: "2-digit",
         second: "2-digit",
       }),
+      defaultSortBy: "descending",
+      sortBy:
+        this.$route.query.sortBy === "ascending" ? "ascending" : "descending",
     };
   },
   watch: {
+    sortBy(newValue) {
+      this.$router.push({
+        query: {
+          sortBy: newValue === this.defaultSortBy ? undefined : newValue,
+        },
+      });
+      this.sortByName();
+    },
     tasks: {
       /*
       Pour la modif d'un array ou d'un objet, on a besoin l'option : "deep:true".
@@ -97,9 +113,7 @@ export default {
     },
     sortByName() {
       //gestion des paramètres dans les urls - Vue Router
-      const sortBy =
-        this.$route.query.sortBy === "ascending" ? "ascending" : "descending";
-      this.$refs.table.sort("name", sortBy);
+      this.$refs.table.sort("name", this.sortBy);
     },
   },
   mounted() {
@@ -107,3 +121,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.el-select {
+  float: right;
+}
+</style>
