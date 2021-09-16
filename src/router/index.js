@@ -4,6 +4,8 @@ import Home from "../pages/Home.vue";
 import Settings from "../pages/Settings.vue";
 
 //nested components / children Routes
+import SettingsApp from "../components/SettingsApp.vue";
+import SettingsUser from "../components/SettingsUser.vue";
 
 //Routes for application
 const routes = [
@@ -16,6 +18,20 @@ const routes = [
     path: "/settings",
     name: "Settings",
     component: Settings,
+    children: [
+      {
+        // SettingsApp will be rendered inside Settings's <router-view>
+        // when /settings/app is matched
+        path: "app",
+        component: SettingsApp,
+      },
+      {
+        // SettingsUser will be rendered inside Settings's <router-view>
+        // when /settings/user is matched
+        path: "user",
+        component: SettingsUser,
+      },
+    ],
   },
 ];
 
