@@ -14,8 +14,8 @@
           :tasks="tasks || []"
           :areTaskLoading="areTaskLoading"
           @restartTask="sendRestartTask($event)"
-          @removeTask="deleteTask($event)"></router-view>
-
+          @removeTask="deleteTask($event)"
+        ></router-view>
       </el-main>
     </el-container>
   </el-container>

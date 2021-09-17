@@ -7,9 +7,10 @@
   <el-table
     v-loading="areTaskLoading"
     :data="tasks"
+    :row-class-name="checkHighlight"
     row-key="id"
+    @rowClick="setHighlightLine"
     empty-text="Aucune tâche"
-    stripe
     style="width: 100%"
     ref="table"
   >
@@ -17,14 +18,14 @@
       prop="name"
       sort-by="startTime"
       label="Tâche"
-      width="250"
+      width="300"
     />
 
     <el-table-column align="right" prop="dayDate" label="Durée" width="100">
       <template #header></template>
     </el-table-column>
 
-    <el-table-column align="right" label="Début et fin" width="150">
+    <el-table-column align="right" label="Début et fin" width="250">
       <template #default="scope">
         {{ formatTimestamp(scope.row.startTime) }}-
         {{ formatTimestamp(scope.row.endTime) }}
@@ -35,7 +36,7 @@
       <template #header></template>
     </el-table-column>
 
-    <el-table-column align="right" label="Actions" width="200">
+    <el-table-column align="right" label="Actions" width="250">
       <template #header></template>
       <template #default="scope">
         <TaskListAction
@@ -115,6 +116,17 @@ export default {
       //gestion des paramètres dans les urls - Vue Router
       this.$refs.table.sort("name", this.sortBy);
     },
+    checkHighlight({ row }) {
+      if (this.$route.params.taskID && row.id == this.$route.params.taskID) {
+        return "highlight-line";
+      } else {
+        return "";
+      }
+    },
+    setHighlightLine(row) {
+      this.$router.push({ path: "/home/" + row.id });
+      console.log(this.$route);
+    },
   },
   mounted() {
     this.sortByName();
@@ -124,5 +136,8 @@ export default {
 <style scoped>
 .el-select {
   float: right;
+}
+.highlight-line {
+  background-color: #40a0ff32 !important;
 }
 </style>

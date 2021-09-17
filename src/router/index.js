@@ -13,6 +13,12 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    children: [
+      {
+        path: "/home/:taskID",
+        component: Home,
+      },
+    ],
   },
   {
     path: "/settings",
