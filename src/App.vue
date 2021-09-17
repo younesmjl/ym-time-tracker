@@ -133,4 +133,7 @@ body {
     border: none !important;
   }
 }
+.highlight-line {
+  background-color: #40a0ff32 !important;
+}
 </style>
