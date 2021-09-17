@@ -11,19 +11,28 @@ import SettingsUser from "../components/SettingsUser.vue";
 const routes = [
   {
     path: "/",
+    alias: "/home",
     name: "Home",
     component: Home,
+    //nested routes + dynamics routes
     children: [
       {
+        //dynamics routes
         path: "/home/:taskID",
         component: Home,
       },
     ],
   },
+  /*redirection
+  {
+    path: "/home",
+    redirect: "/",
+  },*/
   {
     path: "/settings",
     name: "Settings",
     component: Settings,
+    //nested routes
     children: [
       {
         // SettingsApp will be rendered inside Settings's <router-view>
