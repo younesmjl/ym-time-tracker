@@ -117,6 +117,7 @@ export default {
       this.$refs.table.sort("name", this.sortBy);
     },
     checkHighlight({ row }) {
+      //On ajoute la classe highlight-line si on retrouve l'ID d'une tâche au seins d'une route dynamique / :row-class-name
       if (this.$route.params.taskID && row.id == this.$route.params.taskID) {
         return "highlight-line";
       } else {
@@ -124,8 +125,8 @@ export default {
       }
     },
     setHighlightLine(row) {
+      //On ajoute l'id de la tâche à l'url au moment du click sur celle-ci / @rowClick
       this.$router.push({ path: "/home/" + row.id });
-      console.log(this.$route);
     },
   },
   mounted() {
