@@ -2,6 +2,7 @@ import * as VueRouter from "vue-router";
 //routes components
 import Home from "../pages/Home.vue";
 import Settings from "../pages/Settings.vue";
+import NotFound from "../pages/NotFound.vue";
 
 //nested components / children Routes
 import SettingsApp from "../components/SettingsApp.vue";
@@ -23,11 +24,6 @@ const routes = [
       },
     ],
   },
-  /*redirection
-  {
-    path: "/home",
-    redirect: "/",
-  },*/
   {
     path: "/settings",
     name: "Settings",
@@ -47,6 +43,20 @@ const routes = [
         component: SettingsUser,
       },
     ],
+  },
+  //Gestion de la page 404
+  {
+    path: "/notFound",
+    name: "NotFound",
+    component: NotFound,
+  },
+  //(.*) permet de gérer les parametres des routes exemple /home/eer405e40e5zt0rtr. Cela gére le "eer405e40e5zt0rtr".
+  //redirection vers page notFound avec en propriété le paramètre de la page qui est rédiriger
+  {
+    path: "/:wrongPath(.*)",
+    redirect: (to) => {
+      return { name: "NotFound", params: { wrongPath: to.params.wrongPath } };
+    },
   },
 ];
 
