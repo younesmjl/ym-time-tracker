@@ -27,7 +27,7 @@
 
     <el-table-column align="right" label="Début et fin" width="250">
       <template #default="scope">
-        {{ formatTimestamp(scope.row.startTime) }}-
+        {{ formatTimestamp(scope.row.startTime) }} -
         {{ formatTimestamp(scope.row.endTime) }}
       </template>
     </el-table-column>
