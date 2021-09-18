@@ -1,13 +1,15 @@
 import * as VueRouter from "vue-router";
 //routes components
 import Home from "../pages/Home.vue";
-import Settings from "../pages/Settings.vue";
-import NotFound from "../pages/NotFound.vue";
-import Login from "../pages/Login.vue";
 
-//nested components / children Routes
-import SettingsApp from "../components/SettingsApp.vue";
-import SettingsUser from "../components/SettingsUser.vue";
+//Pages loaded in Lazy-Loading
+const Settings = () => import("../pages/Settings.vue");
+const NotFound = () => import("../pages/NotFound.vue");
+const Login = () => import("../pages/Login.vue");
+
+//nested components / children Routes / loaded in Lazy-Loading
+const SettingsApp = () => import("../components/SettingsApp.vue");
+const SettingsUser = () => import("../components/SettingsUser.vue");
 
 //Routes for application
 const routes = [
