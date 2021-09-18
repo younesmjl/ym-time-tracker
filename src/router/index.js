@@ -18,7 +18,7 @@ const routes = [
     alias: "/home",
     name: "Home",
     component: Home,
-    meta: { needLoggedIn: false },
+    meta: { needLoggedIn: false, needSuccessGetTasks: true },
     //nested routes + dynamics routes
     children: [
       {
@@ -32,7 +32,7 @@ const routes = [
     path: "/settings",
     name: "Settings",
     component: Settings,
-    meta: { needLoggedIn: false },
+    meta: { needLoggedIn: false, needSuccessGetTasks: true },
     //nested routes
     children: [
       {
@@ -40,14 +40,17 @@ const routes = [
         // when /settings/app is matched
         path: "app",
         component: SettingsApp,
-        meta: { needLoggedIn: false },
+        meta: {
+          needLoggedIn: false,
+          needSuccessGetTasks: false,
+        },
       },
       {
         // SettingsUser will be rendered inside Settings's <router-view>
         // when /settings/user is matched
         path: "user",
         component: SettingsUser,
-        meta: { needLoggedIn: false },
+        meta: { needLoggedIn: false, needSuccessGetTasks: true },
       },
     ],
   },
@@ -86,9 +89,14 @@ const router = VueRouter.createRouter({
 
 //Navigation Guards
 //beforeEach s'éxecute juste avant que l'on change de routes
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   if (to.meta.needLoggedIn && !localStorage.getItem("isLoggedIn")) {
     return "/login";
+  }
+  //avec to.meta.needSuccessGetTasks, on vérifie qu'une meta needSuccessGetTasks est bien déclaré et est à true
+  //Si elle est déclaré on verifie que la clé successGetTaks est différente de true
+  if (to.meta.needSuccessGetTasks && !localStorage.getItem("successGetTaks")) {
+    return "/settings/app";
   }
 });
 

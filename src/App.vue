@@ -15,6 +15,7 @@
           :areTaskLoading="areTaskLoading"
           @restartTask="sendRestartTask($event)"
           @removeTask="deleteTask($event)"
+          @updateTasks="getAllTasks"
         ></router-view>
       </el-main>
     </el-container>
@@ -83,12 +84,15 @@ export default {
         this.notifyTasks("Synchronisation des tâches impossible");
       }
     },
+    async getAllTasks() {
+      this.tasks = await readAllTasks();
+    },
   },
 
   async created() {
     try {
       //Récupération de toutes les tâches
-      this.tasks = await readAllTasks();
+      this.getAllTasks();
     } catch (error) {
       this.notifyTasks("Aucune tâche n'a pu être récupérée");
     }

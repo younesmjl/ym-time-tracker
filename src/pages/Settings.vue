@@ -1,10 +1,12 @@
 <template>
   <h1>Paramètres</h1>
-  <router-view></router-view>
+  <router-view @updateTasks="$emit('updateTasks')"></router-view>
 </template>
 
 <script>
-export default {};
+export default {
+  emits: ["updateTasks"],
+};
 </script>
 
 <style>
