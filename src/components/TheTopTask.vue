@@ -29,8 +29,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
-  emits: ["newTask"],
   data() {
     return {
       taskname: "",
@@ -61,6 +61,7 @@ export default {
 
   //Les méthodes
   methods: {
+    ...mapActions(["addTask"]),
     startTask(eventTaskName, restart) {
       //Gestion du boutons qui permet de relancer une tâche
       if (this.taskname == "" && eventTaskName !== undefined && restart) {
@@ -90,7 +91,7 @@ export default {
       }
 
       //On envoit un événement au composants parents pour enregister la tâche (App.vue)
-      this.$emit("newTask", {
+      this.addTask({
         name: this.taskname,
         start: this.startTime,
         end: this.nowTime,

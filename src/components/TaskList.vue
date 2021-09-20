@@ -6,7 +6,7 @@
   </el-select>
   <el-table
     v-loading="areTaskLoading"
-    :data="tasks"
+    :data="tasks || []"
     :row-class-name="checkHighlight"
     row-key="id"
     @rowClick="setHighlightLine"
@@ -55,21 +55,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import TaskListAction from "./TaskListAction.vue";
 export default {
   emits: ["restartTask", "removeTask"],
   components: {
     TaskListAction,
   },
-  props: {
-    tasks: {
-      type: Array,
-      default: [],
-    },
-    areTaskLoading: {
-      type: Boolean,
-      default: false,
-    },
+  computed: {
+    ...mapState(["tasks", "areTaskLoading"]),
   },
   data() {
     return {

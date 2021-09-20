@@ -17,12 +17,9 @@
 </template>
 
 <script>
-import {
-  readAllTasks as getTasks,
-  updateAxiosInstance,
-} from "../services/TaskService";
+import { mapActions } from "vuex";
+import { updateAxiosInstance } from "../services/TaskService";
 export default {
-  emits: ["updateTasks"],
   data() {
     return {
       storageApiKey: "apiKey",
@@ -32,6 +29,8 @@ export default {
     };
   },
   methods: {
+    //spread operator for mapActions
+    ...mapActions(["getAllTasks"]),
     async updateParameters(event, keyStorage) {
       //On ajoute
       if (this.apiKey.length > 0) {
@@ -39,11 +38,11 @@ export default {
       } else {
         localStorage.removeItem(keyStorage);
       }
-      await updateAxiosInstance();
+      //Tests de la connexion avec JSONBin.io
+      updateAxiosInstance();
       try {
-        await getTasks();
+        await this.getAllTasks();
         localStorage.setItem("successGetTaks", true);
-        this.$emit("updateTasks");
         this.$notify({
           title: "Succès",
           message: "Vos clés sont enregistrés dans ce navigateur",

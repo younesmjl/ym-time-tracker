@@ -11,7 +11,7 @@
     circle
   ></el-button>
   <el-button
-    @click="handleDelete(taskID)"
+    @click="deleteTask(taskID)"
     icon="el-icon-delete"
     type="danger"
     circle
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   emits: ["restart", "delete"],
   props: {
@@ -32,11 +33,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["deleteTask"]),
     handleRestart(name) {
       this.$emit("restart", name);
-    },
-    handleDelete(id) {
-      this.$emit("delete", id);
     },
     copyToClipboard(name) {
       navigator.clipboard.writeText(name);

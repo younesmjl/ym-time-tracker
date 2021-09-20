@@ -6,39 +6,29 @@
 
     <el-container>
       <el-header height="60px">
-        <TheTopTask ref="TheTopTask" @newTask="addTask($event)" />
+        <TheTopTask ref="TheTopTask" />
       </el-header>
 
       <el-main>
-        <router-view
-          :tasks="tasks || []"
-          :areTaskLoading="areTaskLoading"
-          @restartTask="sendRestartTask($event)"
-          @removeTask="deleteTask($event)"
-          @updateTasks="getAllTasks"
-        ></router-view>
+        <router-view @restartTask="sendRestartTask($event)"></router-view>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 import TheMenu from "./components/TheMenu.vue";
 import TheTopTask from "./components/TheTopTask.vue";
-
-import { v4 as uuid } from "@lukeed/uuid";
-import { readAllTasks, updateAllTasks } from "./services/TaskService";
 
 export default {
   components: {
     TheMenu,
     TheTopTask,
   },
-  data() {
-    return {
-      tasks: [],
-      areTaskLoading: true,
-    };
+  computed: {
+    ...mapState(["tasks", "areTaskLoading"]),
   },
   methods: {
     notifyTasks(message) {
@@ -49,54 +39,21 @@ export default {
         offset: 60,
       });
     },
-    async addTask({ name, start, end, durations }) {
-      //Enregistrement de la tâche en local
-      this.tasks.unshift({
-        id: uuid(),
-        name: name,
-        startTime: start,
-        endTime: end,
-        dayDate: new Intl.DateTimeFormat("fr-FR").format(new Date()),
-        durations: durations,
-      });
 
-      //Ajout de la tâche sur l'API
-      try {
-        await updateAllTasks(this.tasks);
-      } catch (error) {
-        this.notifyTasks("Synchronisation des tâches impossible");
-      }
-    },
     sendRestartTask(taskName) {
       this.$refs.TheTopTask.toggleTask(taskName, true);
     },
-    async deleteTask(idTasks) {
-      //On supprime la taches de l'Array tasks en filtrant sur l'id de le tâches
-      let newTasks = this.tasks.filter((tasks) => tasks.id !== idTasks);
 
-      //On met à jour les tâches en local
-      this.tasks = newTasks;
-
-      //On met à jour les tâches sur l'API
-      try {
-        await updateAllTasks(this.tasks);
-      } catch (error) {
-        this.notifyTasks("Synchronisation des tâches impossible");
-      }
-    },
-    async getAllTasks() {
-      this.tasks = await readAllTasks();
-    },
+    ...mapActions(["getAllTasks"]),
   },
 
   async created() {
     try {
       //Récupération de toutes les tâches
-      this.getAllTasks();
+      await this.getAllTasks();
     } catch (error) {
       this.notifyTasks("Aucune tâche n'a pu être récupérée");
     }
-    this.areTaskLoading = false;
   },
 };
 </script>

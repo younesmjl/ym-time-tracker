@@ -1,11 +1,6 @@
 <template>
   <h1>Tracker</h1>
-  <TaskList
-    :tasks="tasks"
-    :areTaskLoading="areTaskLoading"
-    @restartTask="handleRestart($event)"
-    @removeTask="handleDelete($event)"
-  />
+  <TaskList @restartTask="handleRestart($event)" />
 </template>
 
 <script>
@@ -15,22 +10,9 @@ export default {
   components: {
     TaskList,
   },
-  props: {
-    tasks: {
-      type: Array,
-      default: [],
-    },
-    areTaskLoading: {
-      type: Boolean,
-      default: false,
-    },
-  },
   methods: {
     handleRestart(event) {
       this.$emit("restartTask", event);
-    },
-    handleDelete(event) {
-      this.$emit("removeTask", event);
     },
   },
 };
