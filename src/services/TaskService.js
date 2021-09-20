@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const JSON_BIN_SECRET = localStorage.getItem("apiKey");
-
 let instance = null;
 updateAxiosInstance();
 
