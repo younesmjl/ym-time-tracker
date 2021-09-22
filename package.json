@@ -15,9 +15,10 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.1.5",
-    "@vue/compiler-sfc": "^3.0.5",
-    "sass": "^1.32.8",
-    "vite": "^2.0.5"
+    "@vitejs/plugin-vue": "^1.9.0",
+    "@vue/babel-plugin-jsx": "^1.0.7",
+    "@vue/compiler-sfc": "^3.2.13",
+    "sass": "^1.42.1",
+    "vite": "^2.5.10"
   }
 }
