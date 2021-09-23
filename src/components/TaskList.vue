@@ -44,10 +44,6 @@
         <TaskListAction
           :taskID="scope.row.id"
           :taskName="scope.row.name"
-          v-on="{
-            delete: handleDelete,
-            restart: handleRestart,
-          }"
         ></TaskListAction>
       </template>
     </el-table-column>
@@ -58,7 +54,6 @@
 import { mapState } from "vuex";
 import TaskListAction from "./TaskListAction.vue";
 export default {
-  emits: ["restartTask", "removeTask"],
   components: {
     TaskListAction,
   },
@@ -99,12 +94,6 @@ export default {
     },
   },
   methods: {
-    handleRestart(event) {
-      this.$emit("restartTask", event);
-    },
-    handleDelete(event) {
-      this.$emit("removeTask", event);
-    },
     formatTimestamp(ts) {
       return this.formatter.format(ts);
     },

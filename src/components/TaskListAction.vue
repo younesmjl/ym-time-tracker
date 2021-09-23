@@ -5,7 +5,7 @@
     circle
   ></el-button>
   <el-button
-    @click="handleRestart(taskName)"
+    @click="restartTask(taskName)"
     icon="el-icon-video-play"
     type="primary"
     circle
@@ -21,7 +21,6 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  emits: ["restart", "delete"],
   props: {
     taskID: {
       type: String,
@@ -33,13 +32,16 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["deleteTask"]),
-    handleRestart(name) {
-      this.$emit("restart", name);
-    },
+    ...mapActions(["deleteTask", "restartTask"]),
+
     copyToClipboard(name) {
       navigator.clipboard.writeText(name);
-      alert("Le nom de la tâche a été copiée");
+      this.$notify({
+        title: "Succés",
+        message: "Le nom de la tâche a été copiée",
+        type: "success",
+        offset: 60,
+      });
     },
   },
 };

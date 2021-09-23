@@ -10,7 +10,7 @@
       </el-header>
 
       <el-main>
-        <router-view @restartTask="sendRestartTask($event)"></router-view>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -39,11 +39,6 @@ export default {
         offset: 60,
       });
     },
-
-    sendRestartTask(taskName) {
-      this.$refs.TheTopTask.toggleTask(taskName, true);
-    },
-
     ...mapActions(["getAllTasks"]),
   },
 

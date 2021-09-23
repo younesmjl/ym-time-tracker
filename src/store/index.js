@@ -9,6 +9,9 @@ const store = createStore({
     return {
       tasks: null,
       areTaskLoading: false,
+      currentTaskName: "",
+      currentStartTime: null,
+      isTasksInProgress: false,
     };
   },
   //équivalent au methods des composants
@@ -22,28 +25,17 @@ const store = createStore({
     ADD_TASKS(state, newTasks) {
       state.tasks.unshift(newTasks);
     },
+    SET_CURRENT_TASK_NAME(state, name) {
+      state.currentTaskName = name;
+    },
+    SET_CURRENT_START_TIME(state, value) {
+      state.currentStartTime = value;
+    },
+    SET_IS_TASK_IN_PROGRESS(state, bool) {
+      state.isTasksInProgress = bool;
+    },
   },
   actions: {
-    //Création des tâches // CREATE
-    async addTask({ state, commit, dispatch }, { name, start, end }) {
-      const newTasks = {
-        id: uuid(),
-        name: name,
-        startTime: start,
-        endTime: end,
-        dayDate: new Intl.DateTimeFormat("fr-FR").format(new Date()),
-      };
-      //Enregistrement de le state de vuex
-      commit("ADD_TASKS", newTasks);
-
-      //Ajout de la tâche sur l'API
-      try {
-        await dispatch("updateTasks", state.tasks);
-      } catch (error) {
-        this.notifyTasks("Synchronisation des tâches impossible");
-      }
-    },
-
     //Récupération des tâches // READ
     async getAllTasks({ commit }) {
       commit("SET_ARE_TASKS_LOADIND", true);
@@ -77,6 +69,51 @@ const store = createStore({
       } catch (error) {
         this.notifyTasks("Synchronisation des tâches impossible");
       }
+    },
+
+    startTask({ commit }) {
+      //Début de la tâche
+      commit("SET_IS_TASK_IN_PROGRESS", true);
+      commit("SET_CURRENT_START_TIME", Date.now());
+    },
+
+    async stopTask({ state, commit, dispatch }) {
+      //Création des tâches // CREATE
+      const newTasks = {
+        id: uuid(),
+        name: state.currentTaskName,
+        startTime: state.currentStartTime,
+        endTime: Date.now(),
+        dayDate: new Intl.DateTimeFormat("fr-FR").format(new Date()),
+      };
+
+      //Enregistrement de la tâche dans le state de vuex
+      commit("ADD_TASKS", newTasks);
+      //Fin de la tâche
+      //isTasksInProgress à false
+      commit("SET_IS_TASK_IN_PROGRESS", false);
+      //currentTaskName à vide
+      commit("SET_CURRENT_TASK_NAME", "");
+
+      //Ajout de la tâche sur l'API
+      try {
+        await dispatch("updateTasks", state.tasks);
+      } catch (error) {
+        this.notifyTasks("Synchronisation des tâches impossible");
+      }
+    },
+
+    //On relance une tache dejà executer
+    restartTask({ state, dispatch, commit }, tasksName) {
+      if (state.isTasksInProgress) {
+        dispatch("stopTask");
+      }
+
+      //Faire un setTimeout de 0 delay équivaut à faire un nextTick qui permet d'envoyer les évenements une fois de
+      setTimeout(() => {
+        commit("SET_CURRENT_TASK_NAME", tasksName);
+        dispatch("startTask");
+      });
     },
   },
   plugins: import.meta.env.mode !== "production" ? [createLogger()] : [],

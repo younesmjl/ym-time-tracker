@@ -12,14 +12,14 @@
       <strong>{{ currentDurationTime }}</strong>
       <el-button
         v-if="!isTasksInProgress"
-        @click="startTask"
+        @click="beforeStartTask"
         type="primary"
         icon="el-icon-video-play"
         circle
       ></el-button>
       <el-button
         v-else
-        @click="stopTask"
+        @click="beforeStopTask"
         type="danger"
         icon="el-icon-video-pause"
         circle
@@ -29,13 +29,10 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   data() {
     return {
-      taskname: "",
-      isTasksInProgress: false,
-      startTime: null,
       nowTime: null,
       intervalEverySecond: null,
       errorMsg: null,
@@ -50,6 +47,20 @@ export default {
   Doc pour faire setters, https://v3.vuejs.org/guide/computed.html#computed-setter
   */
   computed: {
+    ...mapState({
+      startTime: (state) => state.currentStartTime,
+      isTasksInProgress: (state) => state.isTasksInProgress,
+    }),
+    taskname: {
+      //getter
+      get() {
+        return this.$store.state.currentTaskName;
+      },
+      //setter
+      set(newValue) {
+        this.$store.commit("SET_CURRENT_TASK_NAME", newValue);
+      },
+    },
     currentDurationTime() {
       if (this.startTime && this.nowTime) {
         return this.durationBetweenTimestamps(this.startTime, this.nowTime);
@@ -59,10 +70,49 @@ export default {
     },
   },
 
+  /*
+  Les watchers sont des fonctions qui vont s'executer à l'instant où une valeur est mis à jour (ici isTasksInProgress).
+  On aura alors  en paramètre, l'ancienne et la nouvelle valeur de la data isTasksInProgress 
+  */
+  watch: {
+    isTasksInProgress(newValue) {
+      /*
+      Lorsque l'on utilise une arrow function le this n'est pas rédéfinie pour la fonction 
+      De ce fait on peut directiment utilisé this
+      */
+      if (newValue) {
+        this.nowTime = Date.now();
+        this.intervalEverySecond = setInterval(() => {
+          this.nowTime = Date.now();
+        }, 1000);
+      } else {
+        this.nowTime = null;
+        this.errorMsg = null;
+        clearInterval(this.intervalEverySecond);
+      }
+    },
+    errorMsg(newVal) {
+      if (newVal !== null) {
+        this.$notify({
+          title: "Attention",
+          message: this.errorMsg,
+          type: "warning",
+          offset: 60,
+          onClose: () => {
+            //Pour qu la même erreur puisse de nouveau être possible
+            if (this.errorMsg === newVal) {
+              this.errorMsg = null;
+            }
+          },
+        });
+      }
+    },
+  },
+
   //Les méthodes
   methods: {
-    ...mapActions(["addTask"]),
-    startTask(eventTaskName, restart) {
+    ...mapActions(["startTask", "stopTask"]),
+    beforeStartTask(eventTaskName, restart) {
       //Gestion du boutons qui permet de relancer une tâche
       if (this.taskname == "" && eventTaskName !== undefined && restart) {
         this.taskname = eventTaskName;
@@ -79,41 +129,27 @@ export default {
       }
 
       //Début de la tâche
-      this.isTasksInProgress = true;
-      this.startTime = Date.now();
-      this.nowTime = Date.now();
+      this.startTask();
     },
-    stopTask() {
+    beforeStopTask() {
       //Vérifications
       if (this.isTasksInProgress === false) {
         this.errorMsg = "Aucune tâches n'est en cours";
         return;
       }
-
-      //On envoit un événement au composants parents pour enregister la tâche (App.vue)
-      this.addTask({
-        name: this.taskname,
-        start: this.startTime,
-        end: this.nowTime,
-        durations: this.durationBetweenTimestamps(this.startTime, this.nowTime),
-      });
-
-      //Fin de la tâche
-      this.isTasksInProgress = false;
-      this.nowTime = null;
-      this.errorMsg = null;
-      this.taskname = "";
+      //On envoit la nouvelle tâche (App.vue)
+      this.stopTask();
     },
 
     toggleTask(eventTaskName, restart) {
       if (!this.isTasksInProgress) {
         this.$nextTick(function () {
-          this.startTask(eventTaskName, restart);
+          this.beforeStartTask(eventTaskName, restart);
         });
       } else if (this.isTasksInProgress && restart) {
-        this.stopTask();
+        this.beforeStopTask();
         this.$nextTick(function () {
-          this.startTask(eventTaskName, restart);
+          this.beforeStartTask(eventTaskName, restart);
         });
       } else {
         this.stopTask();
@@ -142,57 +178,6 @@ export default {
         2,
         "0"
       )}:${String(seconds).padStart(2, "0")}`;
-    },
-  },
-
-  /*
-  Les watchers sont des fonctions qui vont s'executer à l'instant où une valeur est mis à jour (ici isTasksInProgress).
-  On aura alors  en paramètre, l'ancienne et la nouvelle valeur de la data isTasksInProgress 
-  */
-  watch: {
-    isTasksInProgress(newValue) {
-      /*
-      Lorsqu'on utilise une fonction le this est redéfinie pour la fonction elle-même 
-      Pour gérer ce cas, on stocke la valeur this de la fonction isTasksInProgress dans une constante self
-      et on réutilise la constante self dans la fonction setInterval
-      */
-      //const self = this;
-      //if(newValue) {
-      //    this.intervalEverySecond = setInterval(function(){
-      //        self.nowTime= Date.now();
-      //    },1000);
-      //} else {
-      //    clearInterval(this.intervalEverySecond);
-      //}
-
-      /*
-      La deuxieme possibilité est d'utilisé une arrow function () => {},
-      Lorsque l'on utilise une arrow function le this n'est pas rédéfinie pour la fonction 
-      De ce fait on peut directiment utilisé this
-      */
-      if (newValue) {
-        this.intervalEverySecond = setInterval(() => {
-          this.nowTime = Date.now();
-        }, 1000);
-      } else {
-        clearInterval(this.intervalEverySecond);
-      }
-    },
-    errorMsg(newVal) {
-      if (newVal !== null) {
-        this.$notify({
-          title: "Attention",
-          message: this.errorMsg,
-          type: "warning",
-          offset: 60,
-          onClose: () => {
-            //Pour qu la même erreur puisse de nouveau être possible
-            if (this.errorMsg === newVal) {
-              this.errorMsg = null;
-            }
-          },
-        });
-      }
     },
   },
 };
