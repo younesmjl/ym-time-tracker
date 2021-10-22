@@ -4,61 +4,65 @@
     </el-option>
     <el-option label="La plus ancienne d'abord" value="ascending"> </el-option>
   </el-select>
-  <el-table
-    v-loading="areTaskLoading"
-    :data="tasks || []"
-    :row-class-name="checkHighlight"
-    row-key="id"
-    @rowClick="setHighlightLine"
-    empty-text="Aucune tâche"
-    style="width: 100%"
-    ref="table"
-  >
-    <el-table-column
-      prop="name"
-      sort-by="startTime"
-      label="Tâche"
-      width="300"
-    />
+  <div v-for="(dayTasks, dayTS) in tasksByDay" :key="dayTS">
+    <h3>{{ fullDateFormatter.format(dayTS) }}</h3>
+    <el-table
+      v-loading="areTaskLoading"
+      :data="dayTasks"
+      :row-class-name="checkHighlight"
+      row-key="id"
+      @rowClick="setHighlightLine"
+      empty-text="Aucune tâche"
+      style="width: 100%"
+      :ref="dayTS"
+    >
+      <el-table-column
+        prop="name"
+        sort-by="startTime"
+        label="Tâche"
+        width="300"
+      />
 
-    <el-table-column align="right" prop="dayDate" label="Durée" width="100">
-      <template #header></template>
-    </el-table-column>
+      <el-table-column align="right" prop="dayDate" label="Durée" width="100">
+        <template #header></template>
+      </el-table-column>
 
-    <el-table-column align="right" label="Début et fin" width="250">
-      <template #default="scope">
-        {{ formatTimestamp(scope.row.startTime) }} -
-        {{ formatTimestamp(scope.row.endTime) }}
-      </template>
-    </el-table-column>
+      <el-table-column align="right" label="Début et fin" width="250">
+        <template #default="scope">
+          {{ formatTimestamp(scope.row.startTime) }} -
+          {{ formatTimestamp(scope.row.endTime) }}
+        </template>
+      </el-table-column>
 
-    <el-table-column align="right" label="Durée" width="100">
-      <template #default="scope">{{
-        durationBetweenTimestamps(scope.row.startTime, scope.row.endTime)
-      }}</template>
-    </el-table-column>
+      <el-table-column align="right" label="Durée" width="100">
+        <template #default="scope">{{
+          durationBetweenTimestamps(scope.row.startTime, scope.row.endTime)
+        }}</template>
+      </el-table-column>
 
-    <el-table-column align="right" label="Actions" width="250">
-      <template #header></template>
-      <template #default="scope">
-        <TaskListAction
-          :taskID="scope.row.id"
-          :taskName="scope.row.name"
-        ></TaskListAction>
-      </template>
-    </el-table-column>
-  </el-table>
+      <el-table-column align="right" label="Actions" width="250">
+        <template #header></template>
+        <template #default="scope">
+          <TaskListAction
+            :taskID="scope.row.id"
+            :taskName="scope.row.name"
+          ></TaskListAction>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import TaskListAction from "./TaskListAction.vue";
 export default {
   components: {
     TaskListAction,
   },
   computed: {
-    ...mapState(["tasks", "areTaskLoading"]),
+    ...mapState(["areTaskLoading"]),
+    ...mapGetters(["tasksByDay"]),
   },
   data() {
     return {
@@ -67,6 +71,7 @@ export default {
         minute: "2-digit",
         second: "2-digit",
       }),
+      fullDateFormatter: Intl.DateTimeFormat("fr", { dateStyle: "full" }),
       defaultSortBy: "descending",
       sortBy:
         this.$route.query.sortBy === "ascending" ? "ascending" : "descending",
@@ -79,9 +84,10 @@ export default {
           sortBy: newValue === this.defaultSortBy ? undefined : newValue,
         },
       });
+
       this.sortByName();
     },
-    tasks: {
+    tasksByDay: {
       /*
       Pour la modif d'un array ou d'un objet, on a besoin l'option : "deep:true".
       L'objet watch regarde, si la propriété est réinitialiser.
@@ -89,7 +95,9 @@ export default {
       */
       deep: true,
       handler() {
-        this.sortByName();
+        this.$nextTick(() => {
+          this.sortByName();
+        });
       },
     },
   },
@@ -123,7 +131,9 @@ export default {
     },
     sortByName() {
       //gestion des paramètres dans les urls - Vue Router
-      this.$refs.table.sort("name", this.sortBy);
+      for (let dayTS in this.tasksByDay) {
+        this.$refs[dayTS].sort("name", this.sortBy);
+      }
     },
     checkHighlight({ row }) {
       //On ajoute la classe highlight-line si on retrouve l'ID d'une tâche au seins d'une route dynamique / :row-class-name
@@ -146,5 +156,9 @@ export default {
 <style scoped>
 .el-select {
   float: right;
+}
+h3 {
+  text-align: left;
+  text-transform: capitalize;
 }
 </style>
