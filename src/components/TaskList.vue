@@ -61,8 +61,10 @@ export default {
     TaskListAction,
   },
   computed: {
-    ...mapState(["areTaskLoading"]),
-    ...mapGetters(["tasksByDay"]),
+    ...mapState({
+      areTaskLoading: (state) => state.tasks.areTaskLoading,
+    }),
+    ...mapGetters({ tasksByDay: "tasks/tasksByDay" }),
   },
   data() {
     return {

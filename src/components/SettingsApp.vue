@@ -30,7 +30,9 @@ export default {
   },
   methods: {
     //spread operator for mapActions
-    ...mapActions(["getAllTasks"]),
+    ...mapActions({
+      getAllTasks: "tasks/getAllTasks",
+    }),
     async updateParameters(event, keyStorage) {
       //On ajoute
       if (this.apiKey.length > 0) {

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 
 import TheMenu from "./components/TheMenu.vue";
 import TheTopTask from "./components/TheTopTask.vue";
@@ -28,7 +28,10 @@ export default {
     TheTopTask,
   },
   computed: {
-    ...mapState(["tasks", "areTaskLoading"]),
+    ...mapState({
+      tasks: (state) => state.tasks.tasks,
+      areTaskLoading: (state) => state.tasks.areTaskLoading,
+    }),
   },
   methods: {
     notifyTasks(message) {
@@ -39,10 +42,17 @@ export default {
         offset: 60,
       });
     },
-    ...mapActions(["getAllTasks"]),
+    ...mapActions({
+      getAllTasks: "tasks/getAllTasks",
+    }),
+    ...mapMutations({
+      SET_NOTIFIER: "notifications/SET_NOTIFIER",
+    }),
   },
 
   async created() {
+    //Mise en place du système de notifications
+    this.SET_NOTIFIER(this.$notify);
     try {
       //Récupération de toutes les tâches
       await this.getAllTasks();

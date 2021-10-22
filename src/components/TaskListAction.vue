@@ -32,8 +32,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["deleteTask", "restartTask"]),
-
+    ...mapActions({
+      deleteTask: "tasks/deleteTask",
+      restartTask: "tasks/restartTask",
+    }),
     copyToClipboard(name) {
       navigator.clipboard.writeText(name);
       this.$notify({
