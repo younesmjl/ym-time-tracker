@@ -35,14 +35,14 @@ export default {
     ...mapActions({
       deleteTask: "tasks/deleteTask",
       restartTask: "tasks/restartTask",
+      sendSuccess: "notifications/sendSuccess",
     }),
     copyToClipboard(name) {
       navigator.clipboard.writeText(name);
-      this.$notify({
+      this.sendSuccess({
         title: "Succés",
         message: "Le nom de la tâche a été copiée",
         type: "success",
-        offset: 60,
       });
     },
   },

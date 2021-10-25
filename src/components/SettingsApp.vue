@@ -32,6 +32,8 @@ export default {
     //spread operator for mapActions
     ...mapActions({
       getAllTasks: "tasks/getAllTasks",
+      sendError: "notifications/sendError",
+      sendSuccess: "notifications/sendSuccess",
     }),
     async updateParameters(event, keyStorage) {
       //On ajoute
@@ -45,19 +47,15 @@ export default {
       try {
         await this.getAllTasks();
         localStorage.setItem("successGetTaks", true);
-        this.$notify({
+        this.sendSuccess({
           title: "Succès",
           message: "Vos clés sont enregistrés dans ce navigateur",
-          type: "success",
-          offset: 60,
         });
       } catch (error) {
         localStorage.removeItem("successGetTaks");
-        this.$notify.error({
+        this.sendError({
           title: "Erreur",
           message: "Votre clé API ou l'ID de votre BIN est faux ou manquant",
-          type: "danger",
-          offset: 60,
         });
       }
     },

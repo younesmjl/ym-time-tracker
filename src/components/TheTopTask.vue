@@ -48,17 +48,17 @@ export default {
   */
   computed: {
     ...mapState({
-      startTime: (state) => state.currentStartTime,
-      isTasksInProgress: (state) => state.isTasksInProgress,
+      startTime: (state) => state.tasks.currentStartTime,
+      isTasksInProgress: (state) => state.tasks.isTasksInProgress,
     }),
     taskname: {
       //getter
       get() {
-        return this.$store.state.currentTaskName;
+        return this.$store.state.tasks.currentTaskName;
       },
       //setter
       set(newValue) {
-        this.$store.commit("SET_CURRENT_TASK_NAME", newValue);
+        this.$store.commit("tasks/SET_CURRENT_TASK_NAME", newValue);
       },
     },
     currentDurationTime() {
@@ -93,25 +93,23 @@ export default {
     },
     errorMsg(newVal) {
       if (newVal !== null) {
-        this.$notify({
+        this.sendWarning({
           title: "Attention",
           message: this.errorMsg,
           type: "warning",
-          offset: 60,
-          onClose: () => {
-            //Pour qu la même erreur puisse de nouveau être possible
-            if (this.errorMsg === newVal) {
-              this.errorMsg = null;
-            }
-          },
         });
+        this.errorMsg = null;
       }
     },
   },
 
   //Les méthodes
   methods: {
-    ...mapActions(["startTask", "stopTask"]),
+    ...mapActions({
+      startTask: "tasks/startTask",
+      stopTask: "tasks/stopTask",
+      sendWarning: "notifications/sendWarning",
+    }),
     beforeStartTask(eventTaskName, restart) {
       //Gestion du boutons qui permet de relancer une tâche
       if (this.taskname == "" && eventTaskName !== undefined && restart) {

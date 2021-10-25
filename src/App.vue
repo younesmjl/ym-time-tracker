@@ -35,24 +35,18 @@ export default {
   },
   methods: {
     notifyTasks(message) {
-      return this.$notify.error({
+      return this.sendError({
         title: "Mode hors-ligne",
         message,
-        type: "danger",
-        offset: 60,
       });
     },
     ...mapActions({
       getAllTasks: "tasks/getAllTasks",
-    }),
-    ...mapMutations({
-      SET_NOTIFIER: "notifications/SET_NOTIFIER",
+      sendError: "notifications/sendError",
     }),
   },
 
   async created() {
-    //Mise en place du système de notifications
-    this.SET_NOTIFIER(this.$notify);
     try {
       //Récupération de toutes les tâches
       await this.getAllTasks();

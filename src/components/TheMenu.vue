@@ -20,14 +20,14 @@
       <span>Catégories</span>
     </el-menu-item>
 
-    <el-submenu index="/settings">
+    <el-sub-menu index="/settings">
       <template #title>
         <i class="el-icon-setting"></i>
         <span>Paramètres</span>
       </template>
       <el-menu-item index="/settings/app">Application</el-menu-item>
       <el-menu-item index="/settings/user">Utilisateurs</el-menu-item>
-    </el-submenu>
+    </el-sub-menu>
   </el-menu>
 </template>
 
