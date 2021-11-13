@@ -1,26 +1,25 @@
 <template>
-  <el-button
-    @click="copyToClipboard(taskName)"
-    icon="el-icon-document-copy"
-    circle
-  ></el-button>
-  <el-button
-    @click="restartTask(taskID)"
-    icon="el-icon-video-play"
-    type="primary"
-    circle
-  ></el-button>
-  <el-button
-    @click="deleteTask(taskID)"
-    icon="el-icon-delete"
-    type="danger"
-    circle
-  ></el-button>
+  <TaskListActionButton @click="copyToClipboard(taskName)">
+    <template v-slot:text>Copier</template>
+    <i class="el-icon-document-copy"></i>
+  </TaskListActionButton>
+  <TaskListActionButton @click="restartTask(taskID)" type="primary">
+    <template #text>Relancer</template>
+    <i class="el-icon-video-play"></i>
+  </TaskListActionButton>
+  <TaskListActionButton @click="deleteTask(taskID)" type="danger">
+    <template #text>Supprimer</template>
+    <i class="el-icon-delete"></i>
+  </TaskListActionButton>
 </template>
 
 <script>
+import TaskListActionButton from "./TaskListActionButton.vue";
 import { mapActions } from "vuex";
 export default {
+  components: {
+    TaskListActionButton,
+  },
   props: {
     taskID: {
       type: String,

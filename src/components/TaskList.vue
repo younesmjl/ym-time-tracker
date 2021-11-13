@@ -40,7 +40,7 @@
         }}</template>
       </el-table-column>
 
-      <el-table-column align="right" label="Actions" width="250">
+      <el-table-column align="right" label="Actions" width="450">
         <template #header></template>
         <template #default="scope">
           <TaskListAction
