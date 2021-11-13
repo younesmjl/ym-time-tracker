@@ -30,6 +30,9 @@ export default {
     ADD_TASKS(state, newTasks) {
       state.tasks.unshift(newTasks);
     },
+    DELETE_TASK(state, taskIndex) {
+      state.tasks.splice(taskIndex, 1);
+    },
     SET_CURRENT_TASK_NAME(state, name) {
       state.currentTaskName = name;
     },
@@ -61,18 +64,27 @@ export default {
     },
 
     //Suppression des tâches // DELETE
-    async deleteTask({ state, commit, dispatch }, idTasks) {
+    async deleteTask({ state, commit, getters, dispatch }, taskID) {
       //On supprime la taches de l'Array tasks en filtrant sur l'id de le tâches
-      let newTasks = state.tasks.filter((tasks) => tasks.id !== idTasks);
+      //let newTasks = state.tasks.filter((tasks) => tasks.id !== idTasks);
+      //Plutot que filter on récupére la tache via un getter
+      const taskIndex = getters.getTaskIndexByID(taskID);
 
       //On met à jour les tâches dans le state de vuex
-      commit("SET_TASKS", newTasks);
+      commit("DELETE_TASK", taskIndex);
 
       //On met à jour les tâches sur l'API
       try {
         await dispatch("updateTasks", state.tasks);
       } catch (error) {
-        this.notifyTasks("Synchronisation des tâches impossible");
+        dispatch(
+          "notifications/sendError",
+          {
+            title: "Mode hors-ligne",
+            message: "Synchronisation des tâches impossible",
+          },
+          { root: true }
+        );
       }
     },
 
@@ -109,14 +121,15 @@ export default {
     },
 
     //On relance une tache dejà executer
-    restartTask({ state, dispatch, commit }, tasksName) {
+    restartTask({ getters, state, dispatch, commit }, taskID) {
       if (state.isTasksInProgress) {
         dispatch("stopTask");
       }
 
       //Faire un setTimeout de 0 delay équivaut à faire un nextTick qui permet d'envoyer les évenements une fois de
       setTimeout(() => {
-        commit("SET_CURRENT_TASK_NAME", tasksName);
+        const newTaskName = getters.getTaskByID(taskID).name;
+        commit("SET_CURRENT_TASK_NAME", newTaskName);
         dispatch("startTask");
       });
     },
@@ -136,6 +149,12 @@ export default {
       } else {
         return {};
       }
+    },
+    getTaskByID: (state) => (id) => {
+      return state.tasks.find((task) => task.id === id);
+    },
+    getTaskIndexByID: (state, getters) => (id) => {
+      return state.tasks.indexOf(getters.getTaskByID(id));
     },
   },
 };

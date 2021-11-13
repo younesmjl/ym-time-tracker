@@ -5,7 +5,7 @@
     circle
   ></el-button>
   <el-button
-    @click="restartTask(taskName)"
+    @click="restartTask(taskID)"
     icon="el-icon-video-play"
     type="primary"
     circle
