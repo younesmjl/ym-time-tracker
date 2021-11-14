@@ -1,13 +1,5 @@
 <template>
-  <el-menu
-    :router="true"
-    :default-active="
-      ($route.matched[0] && $route.matched[0].path == '/') ||
-      $route.path == '/home'
-        ? '/'
-        : $route.path
-    "
-  >
+  <el-menu :router="true" :default-active="activeRoute">
     <h3>Vue Tracker</h3>
 
     <el-menu-item index="/">
@@ -30,7 +22,21 @@
     </el-sub-menu>
   </el-menu>
 </template>
+<script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+const route = useRoute();
 
+let activeRoute = computed(() => {
+  if (route.path == "/home") {
+    return "/";
+  } else if (route.matched[0] && route.matched[0].path == "/") {
+    return "/";
+  } else {
+    return route.path;
+  }
+});
+</script>
 <style scoped>
 .el-menu {
   border-right: none !important;
