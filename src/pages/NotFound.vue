@@ -1,21 +1,18 @@
-<template>
+  <template>
   <div id="notFound">
     <div class="content">
-      <h1>Erreur 404</h1>
+      <h1>{{ title }}</h1>
       <h2>
-        Page <strong>{{ $route.params.wrongPath }}</strong> non trouvée
+        Page <strong>{{ wrongPath }}</strong
+        >non trouvée
       </h2>
       <p style="margin-bottom: 30px">
         La page que vous souhaitez consulter n'existe pas. Vous pouvez continuer
         votre visite en vous redirigeant à l'aide de notre menu latéral.
       </p>
 
-      <el-button
-        @click="$router.back()"
-        icon="el-icon-video-pause"
-        type="secondary"
-        round
-      >
+      <el-button @click="goToPreviousPage" round>
+        <i class="el-icon-back"></i>
         Revenir en arrière
       </el-button>
     </div>
@@ -23,7 +20,29 @@
 </template>
 
 <script>
-export default {};
+import { reactive, toRefs } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+export default {
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+
+    const state = reactive({
+      wrongPath: route.params.wrongPath,
+      title: "Page Introuvable",
+    });
+
+    const goToPreviousPage = function () {
+      router.back();
+    };
+
+    return {
+      ...toRefs(state),
+      goToPreviousPage,
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
