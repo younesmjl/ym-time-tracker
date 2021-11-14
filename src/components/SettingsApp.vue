@@ -17,27 +17,20 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { ref } from "vue";
+import { useStore } from "vuex";
 import { updateAxiosInstance } from "../services/TaskService";
 export default {
-  data() {
-    return {
-      storageApiKey: "apiKey",
-      storageBinID: "binID",
-      apiKey: null,
-      binID: null,
-    };
-  },
-  methods: {
-    //spread operator for mapActions
-    ...mapActions({
-      getAllTasks: "tasks/getAllTasks",
-      sendError: "notifications/sendError",
-      sendSuccess: "notifications/sendSuccess",
-    }),
-    async updateParameters(event, keyStorage) {
+  setup() {
+    const store = useStore();
+    let storageApiKey = "apiKey";
+    let storageBinID = "binID";
+    let apiKey = ref(localStorage.getItem(storageApiKey) || "");
+    let binID = ref(localStorage.getItem(storageBinID) || "");
+
+    let updateParameters = async function (event, keyStorage) {
       //On ajoute
-      if (this.apiKey.length > 0) {
+      if (apiKey.value.length > 0) {
         localStorage.setItem(keyStorage, event);
       } else {
         localStorage.removeItem(keyStorage);
@@ -45,26 +38,28 @@ export default {
       //Tests de la connexion avec JSONBin.io
       updateAxiosInstance();
       try {
-        await this.getAllTasks();
+        await store.dispatch("tasks/getAllTasks");
         localStorage.setItem("successGetTaks", true);
-        this.sendSuccess({
+        store.dispatch("notifications/sendSuccess", {
           title: "Succès",
           message: "Vos clés sont enregistrés dans ce navigateur",
         });
       } catch (error) {
         localStorage.removeItem("successGetTaks");
-        this.sendError({
+        store.dispatch("notifications/sendError", {
           title: "Erreur",
           message: "Votre clé API ou l'ID de votre BIN est faux ou manquant",
         });
       }
-    },
-  },
-  mounted() {
-    this.apiKey = localStorage.getItem(this.storageApiKey);
-    this.binID = localStorage.getItem(this.storageBinID);
+    };
+
+    return {
+      storageApiKey,
+      storageBinID,
+      apiKey,
+      binID,
+      updateParameters,
+    };
   },
 };
 </script>
-
-<style lang="stylus" scoped></style>
