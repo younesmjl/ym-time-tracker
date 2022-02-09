@@ -31,6 +31,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { useTimestamps } from "../features/useTimestamps";
+import { useIncrementalTimer } from "../features/useIncrementalTimer";
 export default {
   data() {
     return {
@@ -42,8 +43,12 @@ export default {
 
   setup() {
     const { durationBetweenTimestamps } = useTimestamps();
+    const { nowTime, startTimer, stopTimer } = useIncrementalTimer();
     return {
       durationBetweenTimestamps,
+      nowTime,
+      startTimer,
+      stopTimer,
     };
   },
 
@@ -89,14 +94,10 @@ export default {
       De ce fait on peut directiment utilisé this
       */
       if (newValue) {
-        this.nowTime = Date.now();
-        this.intervalEverySecond = setInterval(() => {
-          this.nowTime = Date.now();
-        }, 1000);
+        this.startTimer();
       } else {
-        this.nowTime = null;
         this.errorMsg = null;
-        clearInterval(this.intervalEverySecond);
+        this.stopTimer();
       }
     },
     errorMsg(newVal) {
