@@ -56,12 +56,21 @@
 <script>
 import { mapState, mapGetters } from "vuex";
 import TaskListAction from "./TaskListAction.vue";
-import TimestampsMixin from "../mixins/timestamps.js";
+import { useTimestamps } from "../features/useTimestamps";
+
 export default {
   components: {
     TaskListAction,
   },
-  mixins: [TimestampsMixin],
+  setup() {
+    const { durationBetweenTimestamps, formatTimestamp, fullDateFormatter } =
+      useTimestamps();
+    return {
+      durationBetweenTimestamps,
+      formatTimestamp,
+      fullDateFormatter,
+    };
+  },
   computed: {
     ...mapState({
       areTaskLoading: (state) => state.tasks.areTaskLoading,

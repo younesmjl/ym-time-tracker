@@ -30,14 +30,20 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import TimestampsMixin from "../mixins/timestamps.js";
+import { useTimestamps } from "../features/useTimestamps";
 export default {
-  mixins: [TimestampsMixin],
   data() {
     return {
       nowTime: null,
       intervalEverySecond: null,
       errorMsg: null,
+    };
+  },
+
+  setup() {
+    const { durationBetweenTimestamps } = useTimestamps();
+    return {
+      durationBetweenTimestamps,
     };
   },
 
