@@ -96,7 +96,14 @@
 <script>
 import { reactive, toRef, toRefs } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength, sameAs } from "@vuelidate/validators";
+
+import {
+  required,
+  email,
+  minLength,
+  sameAsPassword,
+  sameAsTrue,
+} from "../utils/validators.js";
 
 export default {
   setup() {
@@ -119,9 +126,9 @@ export default {
       },
       passwordConfirm: {
         required,
-        sameAsPassword: sameAs(toRef(state, "password")),
+        sameAsPassword: sameAsPassword(toRef(state, "password")),
       },
-      termsOfUse: { required, sameAsTrue: sameAs(true) },
+      termsOfUse: { required, sameAsTrue },
     };
 
     const v$ = useVuelidate(rules, state, { $autoDirty: true });
