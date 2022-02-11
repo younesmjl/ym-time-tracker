@@ -7,15 +7,15 @@
           <fieldset>
             <legend>Informations de connexion</legend>
 
-            <label for="email">Adresse email</label>
-            <el-input
+            <BaseInput
+              label="Adresse email"
               v-model="email"
               id="email"
-              placeholder="hello@vuetracker.fr"
+              placeholder="test@email.fr"
               type="email"
               aria-describedby="emailError"
               :aria-invalid="v$.email.$invalid"
-            ></el-input>
+            ></BaseInput>
             <el-alert
               id="emailError"
               v-if="v$.email.$error"
@@ -24,14 +24,14 @@
               :closable="false"
             ></el-alert>
 
-            <label for="password">Mot de passe</label>
-            <el-input
+            <BaseInput
+              label="Mot de passe"
               v-model="password"
               id="password"
               type="password"
               aria-describedby="passwordError"
               :aria-invalid="v$.password.$invalid"
-            ></el-input>
+            ></BaseInput>
             <el-alert
               id="passwordError"
               v-if="v$.password.$error"
@@ -40,14 +40,14 @@
               :closable="false"
             ></el-alert>
 
-            <label for="passwordConfirm">Confirmation du mot de passe</label>
-            <el-input
+            <BaseInput
+              label="Confirmation du mot de passe"
               v-model="passwordConfirm"
               id="passwordConfirm"
               type="password"
               aria-describedby="passwordConfirmError"
               :aria-invalid="v$.passwordConfirm.$invalid"
-            ></el-input>
+            ></BaseInput>
             <el-alert
               id="passwordConfirmError"
               v-if="v$.passwordConfirm.$error"
@@ -63,14 +63,13 @@
 
           <fieldset>
             <legend>Finalisation de l'inscription</legend>
-
-            <el-checkbox
+            <BaseCheckbox
               v-model="termsOfUse"
               aria-describedby="checkBoxError"
               :aria-invalid="v$.termsOfUse.$invalid"
             >
               Conditions d'utilisation
-            </el-checkbox>
+            </BaseCheckbox>
             <el-alert
               id="checkBoxError"
               v-if="v$.termsOfUse.$error"
@@ -96,6 +95,8 @@
 <script>
 import { reactive, toRef, toRefs } from "vue";
 import { useVuelidate } from "@vuelidate/core";
+import BaseInput from "../components/BaseInput.vue";
+import BaseCheckbox from "../components/BaseCheckbox.vue";
 
 import {
   required,
@@ -106,6 +107,7 @@ import {
 } from "../utils/validators.js";
 
 export default {
+  components: { BaseInput, BaseCheckbox },
   setup() {
     const state = reactive({
       email: "",
@@ -165,7 +167,7 @@ fieldset {
 legend {
   display: none;
 }
-.el-input,
+.BaseInput,
 .el-alert {
   display: block;
   max-width: 75%;
