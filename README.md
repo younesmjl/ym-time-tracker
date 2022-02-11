@@ -23,4 +23,4 @@ yarn serve
 
 ### Customize configuration
 See [Configuration Reference](https://vitejs.dev/config/).
-# VueTracker
+# YM Time Tracker

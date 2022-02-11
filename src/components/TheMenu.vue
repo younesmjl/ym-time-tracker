@@ -1,6 +1,6 @@
 <template>
   <el-menu :router="true" :default-active="activeRoute">
-    <h3>Vue Tracker</h3>
+    <h3>YM Time Tracker</h3>
 
     <el-menu-item index="/">
       <i class="el-icon-time"></i>
