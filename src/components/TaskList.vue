@@ -91,7 +91,6 @@ export default {
           sortBy: newValue === this.defaultSortBy ? undefined : newValue,
         },
       });
-
       this.sortByName();
     },
     tasksByDay: {

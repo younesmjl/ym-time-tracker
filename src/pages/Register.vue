@@ -82,9 +82,20 @@
           </fieldset>
 
           <div>
-            <el-button :loading="loading" type="primary" native-type="submit"
+            <el-button
+              :loading="loading"
+              type="primary"
+              native-type="submit"
+              aria-describedby="submitError"
               >Confirmer</el-button
             >
+            <el-alert
+              id="submitError"
+              v-if="apiError"
+              :title="apiError"
+              type="error"
+              :closable="false"
+            ></el-alert>
           </div>
         </form>
       </el-col>
@@ -97,7 +108,7 @@ import { reactive, toRef, toRefs } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import BaseInput from "../components/BaseInput.vue";
 import BaseCheckbox from "../components/BaseCheckbox.vue";
-
+import { Auth, register } from "../services/FireBaseService";
 import {
   required,
   email,
@@ -105,16 +116,20 @@ import {
   sameAsPassword,
   sameAsTrue,
 } from "../utils/validators.js";
+import { useRouter } from "vue-router";
 
 export default {
   components: { BaseInput, BaseCheckbox },
   setup() {
+    const router = useRouter();
+
     const state = reactive({
       email: "",
       password: "",
       passwordConfirm: "",
       termsOfUse: false,
       loading: false,
+      apiError: null,
     });
 
     const rules = {
@@ -135,13 +150,18 @@ export default {
 
     const v$ = useVuelidate(rules, state, { $autoDirty: true });
 
-    const sendForm = () => {
+    const sendForm = async () => {
       v$.value.$touch();
       if (!v$.value.$error) {
         state.loading = true;
-        setTimeout(() => {
-          state.loading = false;
-        }, 1000);
+        //On met simplement un virgule au niveau de l'array pour ne pas définir de variable non utilisé et  consommer de la mémoire inutilement
+        const [, errorCode] = await register(state.email, state.password);
+        if (errorCode) {
+          state.apiError = errorCode;
+        } else {
+          router.push("/settings/app");
+        }
+        state.loading = false;
       }
     };
 
