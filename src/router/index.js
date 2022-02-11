@@ -4,6 +4,7 @@ import Home from "../pages/Home.vue";
 
 //Pages loaded in Lazy-Loading
 const Settings = () => import("../pages/Settings.vue");
+const RegisterPage = () => import("../pages/Register.vue");
 const NotFound = () => import("../pages/NotFound.vue");
 const Login = () => import("../pages/Login.vue");
 
@@ -63,6 +64,11 @@ const routes = [
         return "/";
       }
     },
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: RegisterPage,
   },
   //Gestion de la page 404
   {
