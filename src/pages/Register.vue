@@ -108,7 +108,6 @@ import { reactive, toRef, toRefs } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import BaseInput from "../components/BaseInput.vue";
 import BaseCheckbox from "../components/BaseCheckbox.vue";
-import { Auth, register } from "../services/FireBaseService";
 import {
   required,
   email,
@@ -117,11 +116,13 @@ import {
   sameAsTrue,
 } from "../utils/validators.js";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   components: { BaseInput, BaseCheckbox },
   setup() {
     const router = useRouter();
+    const store = useStore();
 
     const state = reactive({
       email: "",
@@ -155,11 +156,14 @@ export default {
       if (!v$.value.$error) {
         state.loading = true;
         //On met simplement un virgule au niveau de l'array pour ne pas définir de variable non utilisé et  consommer de la mémoire inutilement
-        const [, errorCode] = await register(state.email, state.password);
-        if (errorCode) {
-          state.apiError = errorCode;
-        } else {
+        const res = await store.dispatch("users/register", {
+          email: state.email,
+          password: state.password,
+        });
+        if (res === true) {
           router.push("/settings/app");
+        } else {
+          state.apiError = res;
         }
         state.loading = false;
       }
