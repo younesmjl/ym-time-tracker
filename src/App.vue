@@ -1,5 +1,5 @@
 <template>
-  <el-container class="mainContainer">
+  <el-container v-if="$route.meta.layout === true" class="mainContainer">
     <el-aside width="200px">
       <TheMenu />
     </el-aside>
@@ -14,6 +14,13 @@
       </el-main>
     </el-container>
   </el-container>
+
+  <div v-else-if="$route.meta.layout === false" class="mainContainer">
+    <h3 class="titleNoLayout">YM Time Tracker</h3>
+    <router-view></router-view>
+  </div>
+
+  <div v-else class="mainContainer" v-loading="true"></div>
 </template>
 
 <script>

@@ -19,7 +19,7 @@ const routes = [
     alias: "/home",
     name: "Home",
     component: Home,
-    meta: { needLoggedIn: false, needSuccessGetTasks: true },
+    meta: { layout: true },
     //nested routes + dynamics routes
     children: [
       {
@@ -33,7 +33,7 @@ const routes = [
     path: "/settings",
     name: "Settings",
     component: Settings,
-    meta: { needLoggedIn: false, needSuccessGetTasks: true },
+    meta: { layout: true },
     //nested routes
     children: [
       {
@@ -41,23 +41,19 @@ const routes = [
         // when /settings/app is matched
         path: "app",
         component: SettingsApp,
-        meta: {
-          needLoggedIn: false,
-          needSuccessGetTasks: false,
-        },
       },
       {
         // SettingsUser will be rendered inside Settings's <router-view>
         // when /settings/user is matched
         path: "user",
         component: SettingsUser,
-        meta: { needLoggedIn: false, needSuccessGetTasks: true },
       },
     ],
   },
   {
     path: "/login",
     name: "Login",
+    meta: { layout: false },
     component: Login,
     beforeEnter: (to, from) => {
       if (localStorage.getItem("isLoggedIn")) {
@@ -68,12 +64,15 @@ const routes = [
   {
     path: "/register",
     name: "Register",
+    meta: { layout: false },
     component: RegisterPage,
   },
   //Gestion de la page 404
   {
     path: "/notFound",
     name: "NotFound",
+
+    meta: { layout: false },
     component: NotFound,
   },
   //(.*) permet de gérer les parametres des routes exemple /home/eer405e40e5zt0rtr. Cela gére le "eer405e40e5zt0rtr".
@@ -94,6 +93,7 @@ const router = VueRouter.createRouter({
 });
 
 //Navigation Guards
+/*
 //beforeEach s'éxecute juste avant que l'on change de routes
 router.beforeEach(async (to, from) => {
   if (to.meta.needLoggedIn && !localStorage.getItem("isLoggedIn")) {
@@ -105,5 +105,6 @@ router.beforeEach(async (to, from) => {
     return "/settings/app";
   }
 });
+*/
 
 export default router;
