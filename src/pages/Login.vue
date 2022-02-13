@@ -100,7 +100,6 @@ export default {
           email: state.email,
           password: state.password,
         });
-        console.log("login || res, ", res);
         if (res === true) {
           router.push("/");
         } else {
