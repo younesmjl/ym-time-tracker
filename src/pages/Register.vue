@@ -82,9 +82,20 @@
           </fieldset>
 
           <div>
-            <el-button :loading="loading" type="primary" native-type="submit"
+            <el-button
+              :loading="loading"
+              type="primary"
+              native-type="submit"
+              aria-describedby="submitError"
               >Confirmer</el-button
             >
+            <el-alert
+              id="submitError"
+              v-if="apiError"
+              :title="apiError"
+              type="error"
+              :closable="false"
+            ></el-alert>
           </div>
         </form>
       </el-col>
@@ -97,7 +108,6 @@ import { reactive, toRef, toRefs } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import BaseInput from "../components/BaseInput.vue";
 import BaseCheckbox from "../components/BaseCheckbox.vue";
-
 import {
   required,
   email,
@@ -105,16 +115,22 @@ import {
   sameAsPassword,
   sameAsTrue,
 } from "../utils/validators.js";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default {
   components: { BaseInput, BaseCheckbox },
   setup() {
+    const router = useRouter();
+    const store = useStore();
+
     const state = reactive({
       email: "",
       password: "",
       passwordConfirm: "",
       termsOfUse: false,
       loading: false,
+      apiError: null,
     });
 
     const rules = {
@@ -135,13 +151,21 @@ export default {
 
     const v$ = useVuelidate(rules, state, { $autoDirty: true });
 
-    const sendForm = () => {
+    const sendForm = async () => {
       v$.value.$touch();
       if (!v$.value.$error) {
         state.loading = true;
-        setTimeout(() => {
-          state.loading = false;
-        }, 1000);
+        //On met simplement un virgule au niveau de l'array pour ne pas définir de variable non utilisé et  consommer de la mémoire inutilement
+        const res = await store.dispatch("users/register", {
+          email: state.email,
+          password: state.password,
+        });
+        if (res === true) {
+          router.push("/settings/app");
+        } else {
+          state.apiError = res;
+        }
+        state.loading = false;
       }
     };
 

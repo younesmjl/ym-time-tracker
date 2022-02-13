@@ -39,13 +39,13 @@ export default {
       updateAxiosInstance();
       try {
         await store.dispatch("tasks/getAllTasks");
-        localStorage.setItem("successGetTaks", true);
+        localStorage.setItem("successGetTasks", true);
         store.dispatch("notifications/sendSuccess", {
           title: "Succès",
           message: "Vos clés sont enregistrés dans ce navigateur",
         });
       } catch (error) {
-        localStorage.removeItem("successGetTaks");
+        localStorage.removeItem("successGetTasks");
         store.dispatch("notifications/sendError", {
           title: "Erreur",
           message: "Votre clé API ou l'ID de votre BIN est faux ou manquant",

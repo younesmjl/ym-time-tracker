@@ -19,7 +19,8 @@ const routes = [
     alias: "/home",
     name: "Home",
     component: Home,
-    meta: { needLoggedIn: false, needSuccessGetTasks: true },
+    meta: { layout: true },
+    beforeEnter: [checkLoggedIn, checkGetTasks],
     //nested routes + dynamics routes
     children: [
       {
@@ -32,8 +33,9 @@ const routes = [
   {
     path: "/settings",
     name: "Settings",
+    beforeEnter: [checkLoggedIn],
     component: Settings,
-    meta: { needLoggedIn: false, needSuccessGetTasks: true },
+    meta: { layout: true },
     //nested routes
     children: [
       {
@@ -41,39 +43,35 @@ const routes = [
         // when /settings/app is matched
         path: "app",
         component: SettingsApp,
-        meta: {
-          needLoggedIn: false,
-          needSuccessGetTasks: false,
-        },
       },
       {
         // SettingsUser will be rendered inside Settings's <router-view>
         // when /settings/user is matched
         path: "user",
         component: SettingsUser,
-        meta: { needLoggedIn: false, needSuccessGetTasks: true },
       },
     ],
   },
   {
     path: "/login",
     name: "Login",
+    beforeEnter: [checkNotLoggedIn],
+    meta: { layout: false },
     component: Login,
-    beforeEnter: (to, from) => {
-      if (localStorage.getItem("isLoggedIn")) {
-        return "/";
-      }
-    },
   },
   {
     path: "/register",
     name: "Register",
+    beforeEnter: [checkNotLoggedIn],
+    meta: { layout: false },
     component: RegisterPage,
   },
   //Gestion de la page 404
   {
     path: "/notFound",
     name: "NotFound",
+
+    meta: { layout: false },
     component: NotFound,
   },
   //(.*) permet de gérer les parametres des routes exemple /home/eer405e40e5zt0rtr. Cela gére le "eer405e40e5zt0rtr".
@@ -94,7 +92,26 @@ const router = VueRouter.createRouter({
 });
 
 //Navigation Guards
+function checkLoggedIn() {
+  if (!localStorage.getItem("currentUser")) {
+    return "/login";
+  }
+}
+function checkNotLoggedIn() {
+  if (localStorage.getItem("currentUser")) {
+    return "/";
+  }
+}
+
+function checkGetTasks() {
+  if (!localStorage.getItem("successGetTasks")) {
+    return "/settings/app";
+  }
+}
+
+/*
 //beforeEach s'éxecute juste avant que l'on change de routes
+//2 paramètres :  "to" la page sur laquelle il va, from la de laquelle, il vient
 router.beforeEach(async (to, from) => {
   if (to.meta.needLoggedIn && !localStorage.getItem("isLoggedIn")) {
     return "/login";
@@ -105,5 +122,6 @@ router.beforeEach(async (to, from) => {
     return "/settings/app";
   }
 });
+*/
 
 export default router;

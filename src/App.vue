@@ -1,5 +1,5 @@
 <template>
-  <el-container class="mainContainer">
+  <el-container v-if="$route.meta.layout === true" class="mainContainer">
     <el-aside width="200px">
       <TheMenu />
     </el-aside>
@@ -14,10 +14,17 @@
       </el-main>
     </el-container>
   </el-container>
+
+  <div v-else-if="$route.meta.layout === false" class="mainContainer">
+    <h3 class="titleNoLayout">YM Time Tracker</h3>
+    <router-view></router-view>
+  </div>
+
+  <div v-else class="mainContainer" v-loading="true"></div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 import TheMenu from "./components/TheMenu.vue";
 import TheTopTask from "./components/TheTopTask.vue";
@@ -43,10 +50,13 @@ export default {
     ...mapActions({
       getAllTasks: "tasks/getAllTasks",
       sendError: "notifications/sendError",
+      setWatcheCurrentUser: "users/setWatcheCurrentUser",
     }),
   },
 
   async created() {
+    //Setting up the current user update
+    this.setWatcheCurrentUser();
     try {
       //Récupération de toutes les tâches
       await this.getAllTasks();
