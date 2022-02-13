@@ -1,6 +1,7 @@
 import {
   register as firebaseRegister,
   translateErrorCode,
+  login as loginFirebase,
 } from "../../services/FireBaseService";
 
 export default {
@@ -23,6 +24,15 @@ export default {
         return translateErrorCode(errorCode.code);
       } else {
         commit("SET_CURRENT_USER", res.user);
+        return true;
+      }
+    },
+    async login({ commit }, { email, password }) {
+      const [res, errorCode] = await loginFirebase(email, password);
+      if (errorCode) {
+        return translateErrorCode(errorCode.code);
+      } else {
+        commit("SET_CURRENT_USER", res);
         return true;
       }
     },

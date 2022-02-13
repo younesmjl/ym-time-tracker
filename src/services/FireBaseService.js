@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA_4cIr373IbWUqCc2n2Z-aui9mhiYbgXU",
@@ -21,6 +25,15 @@ export const Auth = auth;
 export async function register(email, password) {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
+    return [res, null];
+  } catch (error) {
+    return [null, error];
+  }
+}
+
+export async function login(email, password) {
+  try {
+    const res = await signInWithEmailAndPassword(auth, email, password);
     return [res, null];
   } catch (error) {
     return [null, error];
