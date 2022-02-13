@@ -20,6 +20,7 @@ const routes = [
     name: "Home",
     component: Home,
     meta: { layout: true },
+    beforeEnter: [checkLoggedIn, checkGetTasks],
     //nested routes + dynamics routes
     children: [
       {
@@ -32,6 +33,7 @@ const routes = [
   {
     path: "/settings",
     name: "Settings",
+    beforeEnter: [checkLoggedIn],
     component: Settings,
     meta: { layout: true },
     //nested routes
@@ -53,17 +55,14 @@ const routes = [
   {
     path: "/login",
     name: "Login",
+    beforeEnter: [checkNotLoggedIn],
     meta: { layout: false },
     component: Login,
-    beforeEnter: (to, from) => {
-      if (localStorage.getItem("isLoggedIn")) {
-        return "/";
-      }
-    },
   },
   {
     path: "/register",
     name: "Register",
+    beforeEnter: [checkNotLoggedIn],
     meta: { layout: false },
     component: RegisterPage,
   },
@@ -93,8 +92,26 @@ const router = VueRouter.createRouter({
 });
 
 //Navigation Guards
+function checkLoggedIn() {
+  if (!localStorage.getItem("currentUser")) {
+    return "/login";
+  }
+}
+function checkNotLoggedIn() {
+  if (localStorage.getItem("currentUser")) {
+    return "/";
+  }
+}
+
+function checkGetTasks() {
+  if (!localStorage.getItem("successGetTasks")) {
+    return "/settings/app";
+  }
+}
+
 /*
 //beforeEach s'éxecute juste avant que l'on change de routes
+//2 paramètres :  "to" la page sur laquelle il va, from la de laquelle, il vient
 router.beforeEach(async (to, from) => {
   if (to.meta.needLoggedIn && !localStorage.getItem("isLoggedIn")) {
     return "/login";
