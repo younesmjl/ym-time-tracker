@@ -91,7 +91,7 @@ export default {
           sortBy: newValue === this.defaultSortBy ? undefined : newValue,
         },
       });
-      this.sortByName();
+      //this.sortByName();
     },
     tasksByDay: {
       /*
@@ -102,18 +102,18 @@ export default {
       deep: true,
       handler() {
         this.$nextTick(() => {
-          this.sortByName();
+          //this.sortByName();
         });
       },
     },
   },
   methods: {
-    sortByName() {
+    /*sortByName() {
       //gestion des paramètres dans les urls - Vue Router
       for (let dayTS in this.tasksByDay) {
         this.$refs[dayTS].sort("name", this.sortBy);
       }
-    },
+    },*/
     checkHighlight({ row }) {
       //On ajoute la classe highlight-line si on retrouve l'ID d'une tâche au seins d'une route dynamique / :row-class-name
       if (this.$route.params.taskID && row.id == this.$route.params.taskID) {
@@ -128,7 +128,7 @@ export default {
     },
   },
   mounted() {
-    this.sortByName();
+    //this.sortByName();
   },
 };
 </script>
