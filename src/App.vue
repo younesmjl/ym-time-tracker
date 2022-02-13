@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 import TheMenu from "./components/TheMenu.vue";
 import TheTopTask from "./components/TheTopTask.vue";
@@ -43,10 +43,13 @@ export default {
     ...mapActions({
       getAllTasks: "tasks/getAllTasks",
       sendError: "notifications/sendError",
+      setWatcheCurrentUser: "users/setWatcheCurrentUser",
     }),
   },
 
   async created() {
+    //Setting up the current user update
+    this.setWatcheCurrentUser();
     try {
       //Récupération de toutes les tâches
       await this.getAllTasks();
