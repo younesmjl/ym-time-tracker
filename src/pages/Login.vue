@@ -1,60 +1,73 @@
 <template>
-  <div>
-    <h1>Connexion</h1>
-    <el-row>
-      <el-col :span="12" :offset="6">
-        <form action="/" method="get" @submit.prevent="sendForm">
-          <BaseInput
-            label="Adresse email"
-            v-model="email"
-            placeholder="hello@vuetracker.fr"
-            type="email"
-            id="email"
-            aria-describedby="emailError"
-            :aria-invalid="v$.email.$invalid"
-          />
+  <div class="flex content-center justify-center items-center h-full">
+    <div
+      class="overflow-hidden bg-white shadow-lg max-w-lg rounded-lg m md:flex"
+    >
+      <img
+        class="flex-1 w-full h-40 object-cover md:h-full md:max-h-96"
+        src="../assets/images/background-login.jpg"
+        alt=""
+      />
+      <form
+        class="flex-1 p-4 pt-0 md:flex flex-col justify-center"
+        action="/"
+        method="get"
+        @submit.prevent="sendForm"
+      >
+        <h1 class="text-2xl font-bold text-gray-800 mt-4 px-4">
+          <span class="text-1xl">Connexion</span>
+        </h1>
+        <BaseInput
+          label="Adresse email"
+          v-model="email"
+          placeholder="hello@vuetracker.fr"
+          type="email"
+          id="email"
+          aria-describedby="emailError"
+          :aria-invalid="v$.email.$invalid"
+        />
+        <el-alert
+          v-if="v$.email.$error"
+          :title="v$.email.$error ? v$.email.$errors[0].$message : ''"
+          type="error"
+          :closable="false"
+          id="emailError"
+        ></el-alert>
+
+        <BaseInput
+          label="Mot de passe"
+          v-model="password"
+          type="password"
+          id="password"
+          aria-describedby="passwordError"
+          :aria-invalid="v$.password.$invalid"
+        />
+        <el-alert
+          v-if="v$.password.$error"
+          :title="v$.password.$error ? v$.password.$errors[0].$message : ''"
+          type="error"
+          :closable="false"
+          id="passwordError"
+        ></el-alert>
+
+        <div>
+          <el-button
+            class="bg-gray-800 border-0 hover:bg-gray-400 w-full py-2 px-4 mt-4 text-white rounded-md"
+            type="primary"
+            native-type="submit"
+            :loading="loading"
+            @click.prevent="sendForm"
+            >Confirmer</el-button
+          >
           <el-alert
-            v-if="v$.email.$error"
-            :title="v$.email.$error ? v$.email.$errors[0].$message : ''"
+            v-if="apiError"
+            :title="apiError"
             type="error"
             :closable="false"
-            id="emailError"
           ></el-alert>
-
-          <BaseInput
-            label="Mot de passe"
-            v-model="password"
-            type="password"
-            id="password"
-            aria-describedby="passwordError"
-            :aria-invalid="v$.password.$invalid"
-          />
-          <el-alert
-            v-if="v$.password.$error"
-            :title="v$.password.$error ? v$.password.$errors[0].$message : ''"
-            type="error"
-            :closable="false"
-            id="passwordError"
-          ></el-alert>
-
-          <div>
-            <el-button
-              type="primary"
-              native-type="submit"
-              :loading="loading"
-              @click.prevent="sendForm"
-              >Confirmer</el-button
-            >
-            <el-alert
-              v-if="apiError"
-              :title="apiError"
-              type="error"
-              :closable="false"
-            ></el-alert>
-          </div>
-        </form>
-      </el-col>
-    </el-row>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -118,28 +131,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-form {
-  padding: 30px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-  border-radius: 4px;
-  text-align: left;
-}
 fieldset {
   border: none;
 }
 legend {
   display: none;
 }
-.el-input,
 .el-alert {
   display: block;
-  max-width: 75%;
-  margin: 10px 0;
-}
-.el-checkbox {
-  margin: 20px 0 0;
-}
-.el-button {
-  margin-top: 25px;
+  @apply bg-white pl-0 pt-1;
 }
 </style>

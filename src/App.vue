@@ -16,7 +16,6 @@
   </el-container>
 
   <div v-else-if="$route.meta.layout === false" class="mainContainer">
-    <h3 class="titleNoLayout">YM Time Tracker</h3>
     <router-view></router-view>
   </div>
 

@@ -1,6 +1,13 @@
 <template>
-  <label :for="id">{{ label }}</label>
-  <el-input v-model="value" :id="id" v-bind="$attrs"></el-input>
+  <label class="text-gray-600 mt-2 mb-2 text-left block" :for="id">{{
+    label
+  }}</label>
+  <el-input
+    class="border-gray-300 rounded"
+    v-model="value"
+    :id="id"
+    v-bind="$attrs"
+  ></el-input>
 </template>
 
 <script>
@@ -35,10 +42,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.el-input {
-  display: block;
-  max-width: 75%;
-  margin: 10px 0;
-}
-</style>
+<style lang="scss" scoped></style>
