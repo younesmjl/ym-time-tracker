@@ -1,20 +1,13 @@
 <template>
-  <div class="flex content-center justify-center items-center h-full">
-    <div
-      class="overflow-hidden bg-white shadow-lg max-w-lg rounded-lg m md:flex"
-    >
+  <div class="flex-form-container">
+    <div class="container-form">
       <img
         class="flex-1 w-full h-40 object-cover md:h-full md:max-h-96"
         src="../assets/images/background-login.jpg"
         alt=""
       />
-      <form
-        class="flex-1 p-4 pt-0 md:flex flex-col justify-center"
-        action="/"
-        method="get"
-        @submit.prevent="sendForm"
-      >
-        <h1 class="text-2xl font-bold text-gray-800 mt-4 px-4">
+      <form action="/" method="get" @submit.prevent="sendForm">
+        <h1>
           <span class="text-1xl">Connexion</span>
         </h1>
         <BaseInput
@@ -52,7 +45,7 @@
 
         <div>
           <el-button
-            class="bg-gray-800 border-0 hover:bg-gray-400 w-full py-2 px-4 mt-4 text-white rounded-md"
+            class="mt-4"
             type="primary"
             native-type="submit"
             :loading="loading"

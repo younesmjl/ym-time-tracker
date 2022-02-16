@@ -1,105 +1,103 @@
 <template>
-  <div>
-    <h1>Inscription</h1>
-    <el-row>
-      <el-col :span="12" :offset="6">
-        <form action="/" method="get" @submit.prevent="sendForm">
-          <fieldset>
-            <legend>Informations de connexion</legend>
+  <div class="flex-form-container">
+    <div class="container-form w-full lg:w-2/3">
+      <form action="/" method="get" @submit.prevent="sendForm">
+        <h1>Inscription</h1>
+        <fieldset>
+          <legend>Informations de connexion</legend>
 
-            <BaseInput
-              label="Adresse email"
-              v-model="email"
-              id="email"
-              placeholder="test@email.fr"
-              type="email"
-              aria-describedby="emailError"
-              :aria-invalid="v$.email.$invalid"
-            ></BaseInput>
-            <el-alert
-              id="emailError"
-              v-if="v$.email.$error"
-              :title="v$.email.$error ? v$.email.$errors[0].$message : ''"
-              type="error"
-              :closable="false"
-            ></el-alert>
+          <BaseInput
+            label="Adresse email"
+            v-model="email"
+            id="email"
+            placeholder="test@email.fr"
+            type="email"
+            aria-describedby="emailError"
+            :aria-invalid="v$.email.$invalid"
+          ></BaseInput>
+          <el-alert
+            id="emailError"
+            v-if="v$.email.$error"
+            :title="v$.email.$error ? v$.email.$errors[0].$message : ''"
+            type="error"
+            :closable="false"
+          ></el-alert>
 
-            <BaseInput
-              label="Mot de passe"
-              v-model="password"
-              id="password"
-              type="password"
-              aria-describedby="passwordError"
-              :aria-invalid="v$.password.$invalid"
-            ></BaseInput>
-            <el-alert
-              id="passwordError"
-              v-if="v$.password.$error"
-              :title="v$.password.$error ? v$.password.$errors[0].$message : ''"
-              type="error"
-              :closable="false"
-            ></el-alert>
+          <BaseInput
+            label="Mot de passe"
+            v-model="password"
+            id="password"
+            type="password"
+            aria-describedby="passwordError"
+            :aria-invalid="v$.password.$invalid"
+          ></BaseInput>
+          <el-alert
+            id="passwordError"
+            v-if="v$.password.$error"
+            :title="v$.password.$error ? v$.password.$errors[0].$message : ''"
+            type="error"
+            :closable="false"
+          ></el-alert>
 
-            <BaseInput
-              label="Confirmation du mot de passe"
-              v-model="passwordConfirm"
-              id="passwordConfirm"
-              type="password"
-              aria-describedby="passwordConfirmError"
-              :aria-invalid="v$.passwordConfirm.$invalid"
-            ></BaseInput>
-            <el-alert
-              id="passwordConfirmError"
-              v-if="v$.passwordConfirm.$error"
-              :title="
-                v$.passwordConfirm.$error
-                  ? v$.passwordConfirm.$errors[0].$message
-                  : ''
-              "
-              type="error"
-              :closable="false"
-            ></el-alert>
-          </fieldset>
+          <BaseInput
+            label="Confirmation du mot de passe"
+            v-model="passwordConfirm"
+            id="passwordConfirm"
+            type="password"
+            aria-describedby="passwordConfirmError"
+            :aria-invalid="v$.passwordConfirm.$invalid"
+          ></BaseInput>
+          <el-alert
+            id="passwordConfirmError"
+            v-if="v$.passwordConfirm.$error"
+            :title="
+              v$.passwordConfirm.$error
+                ? v$.passwordConfirm.$errors[0].$message
+                : ''
+            "
+            type="error"
+            :closable="false"
+          ></el-alert>
+        </fieldset>
 
-          <fieldset>
-            <legend>Finalisation de l'inscription</legend>
-            <BaseCheckbox
-              v-model="termsOfUse"
-              aria-describedby="checkBoxError"
-              :aria-invalid="v$.termsOfUse.$invalid"
-            >
-              Conditions d'utilisation
-            </BaseCheckbox>
-            <el-alert
-              id="checkBoxError"
-              v-if="v$.termsOfUse.$error"
-              :title="
-                v$.termsOfUse.$error ? v$.termsOfUse.$errors[0].$message : ''
-              "
-              type="error"
-              :closable="false"
-            ></el-alert>
-          </fieldset>
+        <fieldset>
+          <legend>Finalisation de l'inscription</legend>
+          <BaseCheckbox
+            v-model="termsOfUse"
+            aria-describedby="checkBoxError"
+            :aria-invalid="v$.termsOfUse.$invalid"
+          >
+            Conditions d'utilisation
+          </BaseCheckbox>
+          <el-alert
+            id="checkBoxError"
+            v-if="v$.termsOfUse.$error"
+            :title="
+              v$.termsOfUse.$error ? v$.termsOfUse.$errors[0].$message : ''
+            "
+            type="error"
+            :closable="false"
+          ></el-alert>
+        </fieldset>
 
-          <div>
-            <el-button
-              :loading="loading"
-              type="primary"
-              native-type="submit"
-              aria-describedby="submitError"
-              >Confirmer</el-button
-            >
-            <el-alert
-              id="submitError"
-              v-if="apiError"
-              :title="apiError"
-              type="error"
-              :closable="false"
-            ></el-alert>
-          </div>
-        </form>
-      </el-col>
-    </el-row>
+        <div>
+          <el-button
+            :loading="loading"
+            type="primary"
+            native-type="submit"
+            aria-describedby="submitError"
+            >Confirmer</el-button
+          >
+          <el-alert
+            id="submitError"
+            v-if="apiError"
+            :title="apiError"
+            type="error"
+            :closable="false"
+          ></el-alert>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 

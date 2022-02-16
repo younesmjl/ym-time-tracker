@@ -5,7 +5,20 @@
 .el-main {
   overflow: initial;
 }
-
+/*form css*/
+.flex-form-container {
+  @apply flex content-center justify-center items-center h-full;
+}
+.container-form {
+  @apply overflow-hidden m-4 bg-white shadow-lg max-w-lg rounded-lg md:flex;
+}
+form {
+  @apply flex-1 p-4 pt-0 md:flex flex-col justify-center;
+}
+form h1 {
+  @apply text-2xl text-center font-bold text-gray-800 mt-4 px-4;
+}
+/*end form css */
 .el-button:isnot("is-circle") {
   @apply w-full py-2 px-4 mt-4 text-white rounded-md;
 }
