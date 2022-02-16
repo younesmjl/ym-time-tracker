@@ -4,52 +4,54 @@
     </el-option>
     <el-option label="La plus ancienne d'abord" value="ascending"> </el-option>
   </el-select>
-  <div v-for="(dayTasks, dayTS) in tasksByDay" :key="dayTS">
-    <h3>{{ fullDateFormatter.format(dayTS) }}</h3>
-    <el-table
-      v-loading="areTaskLoading"
-      :data="dayTasks"
-      :row-class-name="checkHighlight"
-      row-key="id"
-      @rowClick="setHighlightLine"
-      empty-text="Aucune tâche"
-      style="width: 100%"
-      :ref="dayTS"
+
+  <div
+    class="border border-gray-300 m-4 shadow"
+    v-for="(dayTasks, dayTS) in tasksByDay"
+    :key="dayTS"
+  >
+    <div
+      class="bg-gray-200 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 bg-gray-200 items-center"
     >
-      <el-table-column
-        prop="name"
-        sort-by="startTime"
-        label="Tâche"
-        width="300"
-      />
+      <h3
+        class="capitalize text-center md:text-left lg:text-left font-bold text-lg"
+      >
+        {{ fullDateFormatter.format(dayTS) }}
+      </h3>
+      <div class="hidden md:block lg: block font-bold text-lg">
+        Début et Fin
+      </div>
+      <div class="hidden md:block lg: block font-bold text-lg">Durée</div>
+    </div>
 
-      <el-table-column align="right" prop="dayDate" label="Durée" width="100">
-        <template #header></template>
-      </el-table-column>
+    <div
+      v-for="(dayTask, id) in dayTasks"
+      :key="id"
+      class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4 bg-white items-center border-b border-gray-200"
+    >
+      <div class="text-center sm:text-xl lg:text-lg lg:text-left">
+        <span class="font-bold md:hidden lg:hidden">Tâche: </span>
 
-      <el-table-column align="right" label="Début et fin" width="250">
-        <template #default="scope">
-          {{ formatTimestamp(scope.row.startTime) }} -
-          {{ formatTimestamp(scope.row.endTime) }}
-        </template>
-      </el-table-column>
-
-      <el-table-column align="right" label="Durée" width="100">
-        <template #default="scope">{{
-          durationBetweenTimestamps(scope.row.startTime, scope.row.endTime)
-        }}</template>
-      </el-table-column>
-
-      <el-table-column align="right" label="Actions" width="450">
-        <template #header></template>
-        <template #default="scope">
-          <TaskListAction
-            :taskID="scope.row.id"
-            :taskName="scope.row.name"
-          ></TaskListAction>
-        </template>
-      </el-table-column>
-    </el-table>
+        {{ dayTask.name }}
+      </div>
+      <div>
+        <span class="font-bold md:hidden lg:hidden">Début et Fin: </span>
+        {{ formatTimestamp(dayTask.startTime) }} -
+        {{ formatTimestamp(dayTask.endTime) }}
+      </div>
+      <div>
+        <span class="font-bold md:hidden lg:hidden">Durée: </span>
+        {{ durationBetweenTimestamps(dayTask.startTime, dayTask.endTime) }}
+      </div>
+      <div
+        class="flex items-center justify-center flex-wrap md:col-span-3 lg:col-span-2 lg:justify-end lg:flex-nowrap sm:gap-2"
+      >
+        <TaskListAction
+          :taskID="dayTask.id"
+          :taskName="dayTask.name"
+        ></TaskListAction>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -132,12 +134,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-.el-select {
-  float: right;
-}
-h3 {
-  text-align: left;
-  text-transform: capitalize;
-}
-</style>
+<style scoped></style>
