@@ -1,31 +1,48 @@
 <template>
-  <el-row>
-    <el-col :xs="12" :span="15" :lg="18">
-      <el-input
-        @keyup.enter="toggleTask"
-        v-model="taskname"
-        placeholder="Nom de votre tâche"
-      ></el-input>
-    </el-col>
-
-    <el-col :xs="12" :span="9" :lg="6" class="actions">
-      <strong>{{ currentDurationTime }}</strong>
-      <el-button
-        v-if="!isTasksInProgress"
-        @click="beforeStartTask"
-        type="primary"
-        icon="el-icon-video-play"
-        circle
-      ></el-button>
-      <el-button
-        v-else
-        @click="beforeStopTask"
-        type="danger"
-        icon="el-icon-video-pause"
-        circle
-      ></el-button>
-    </el-col>
-  </el-row>
+  <el-input
+    @keyup.enter="toggleTask"
+    v-model="taskname"
+    placeholder="Nom de votre tâche"
+  ></el-input>
+  <strong>{{ currentDurationTime }}</strong>
+  <el-button
+    class="w-9 h-9"
+    v-if="!isTasksInProgress"
+    @click="beforeStartTask"
+    type="primary"
+    circle
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+      />
+    </svg>
+  </el-button>
+  <el-button
+    class="w-9 h-9"
+    v-else
+    @click="beforeStopTask"
+    type="danger"
+    circle
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-8 w-8"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path d="M10 9v6m4-6v6m7-3a9 9 0" />
+    </svg>
+  </el-button>
 </template>
 
 <script>
@@ -167,11 +184,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-input {
-  padding-left: 20px;
-  box-sizing: border-box;
-}
-
 .actions {
   text-align: right;
   padding-right: 20px;

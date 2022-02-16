@@ -1,9 +1,9 @@
 <template>
   <el-button round>
+    <slot name="icon"></slot>
     <strong>
       <slot name="text"></slot>
     </strong>
-    <slot>Button</slot>
   </el-button>
 </template>
 

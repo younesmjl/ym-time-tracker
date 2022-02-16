@@ -1,14 +1,7 @@
 <template>
   <el-container v-if="$route.meta.layout === true" class="mainContainer">
-    <el-aside width="200px">
-      <TheMenu />
-    </el-aside>
-
-    <el-container>
-      <el-header height="60px">
-        <TheTopTask ref="TheTopTask" />
-      </el-header>
-
+    <TheMenu />
+    <el-container class="mt-14">
       <el-main>
         <router-view></router-view>
       </el-main>
@@ -25,14 +18,13 @@
 <script>
 import { mapState, mapActions } from "vuex";
 
-import TheMenu from "./components/TheMenu.vue";
-import TheTopTask from "./components/TheTopTask.vue";
+import TheMenu from "./components/menu/TheMenu.vue";
 
 export default {
   components: {
     TheMenu,
-    TheTopTask,
   },
+
   computed: {
     ...mapState({
       tasks: (state) => state.tasks.tasks,
