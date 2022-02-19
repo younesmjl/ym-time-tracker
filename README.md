@@ -2,12 +2,12 @@
 
 ## Description
 
-> **INDICATEURS**
+> **INDICATORS**
 > + DONE :  - [production](https://ym-time-tracker.netlify.app/)
 > + IN PROGRESS : 🔁 - [development](https://develop--ym-time-tracker.netlify.app/)
 > + TO DO : 🚧
 
-### Guides et dépannage
+### Guides
 
 | RELEASE |DESCRIPTION|STATUS|
 |:--:|:--:|:--:|
