@@ -3,7 +3,7 @@
 ## Description
 
 > **INDICATORS**
-> + DONE :  - [production](https://ym-time-tracker.netlify.app/)
+> + DONE : ✅ - [production](https://ym-time-tracker.netlify.app/)
 > + IN PROGRESS : 🔁 - [development](https://develop--ym-time-tracker.netlify.app/)
 > + TO DO : 🚧
 
