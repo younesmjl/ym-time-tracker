@@ -1,8 +1,18 @@
 <template>
-  <div class="flex-form-container">
+  <div class="flex-form-container flex-col">
+    <div class="flex justify-content flex-col mt-6 mb-4">
+      <h1 class="mb-2">Get started with YM Time Tracker</h1>
+      <h4 class="mb-2">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit curabitur
+        molestie.
+      </h4>
+      <span
+        >Aliquet commodo nisi sagittis vel · Morbi congue sed magna varius
+      </span>
+    </div>
     <div class="container-form">
       <img
-        class="flex-1 w-full h-40 object-cover md:h-full md:max-h-96"
+        class="flex-1 w-full h-40 object-cover md:h-full md:max-h-96 rounded-l-md"
         src="../assets/images/background-login.jpg"
         alt=""
       />
@@ -61,6 +71,12 @@
         </div>
       </form>
     </div>
+    <span class="text-sm block mt-2 mb-6"
+      >Pas de compte ?
+      <a class="text-black hover:text-gray-400" href="/register">
+        Créez un compte</a
+      >
+    </span>
   </div>
 </template>
 

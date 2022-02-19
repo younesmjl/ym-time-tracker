@@ -80,7 +80,7 @@
           ></el-alert>
         </fieldset>
 
-        <div>
+        <div class="self-center">
           <el-button
             :loading="loading"
             type="primary"
@@ -96,6 +96,12 @@
             :closable="false"
           ></el-alert>
         </div>
+        <span class="self-center text-sm block my-4"
+          >Vous avez déjà un identifiant ?
+          <a class="text-black hover:text-gray-400" href="/login">
+            Connectez-vous</a
+          >
+        </span>
       </form>
     </div>
   </div>
