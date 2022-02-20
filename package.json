@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@lukeed/uuid": "^2.0.0",
+    "@sentry/tracing": "^6.17.9",
+    "@sentry/vue": "^6.17.9",
     "@vuelidate/core": "^2.0.0-alpha.34",
     "@vuelidate/validators": "^2.0.0-alpha.26",
     "@vueuse/core": "^7.6.2",
