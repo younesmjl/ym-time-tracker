@@ -5,7 +5,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commit": "git cz"
   },
   "dependencies": {
     "@lukeed/uuid": "^2.0.0",
@@ -48,9 +49,9 @@
     "url": "https://github.com/younesmjl/ym-time-tracker"
   },
   "config": {
-  "commitizen": {
-    "path": "@commitlint/cz-commitlint"
-  }
-},
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
   "license": "MIT"
 }

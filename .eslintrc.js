@@ -9,7 +9,5 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["vue"],
-  rules: {
-    quotes: [2, "single"],
-  },
+  rules: {},
 };
