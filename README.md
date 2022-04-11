@@ -13,7 +13,7 @@
 |:--:|:--:|:--:|
 |[v0.1.0](https://github.com/younesmjl/ym-time-tracker/releases/tag/v0.1)| YM Time Tracker Initialization | ✅ |
 |[v0.2.0](https://github.com/younesmjl/ym-time-tracker/releases/tag/v0.2)| Initialization client-side routing (Vue Router, Nested & Dynamics routes) | ✅ |
-|[v0.3.0](https://github.com/younesmjl/ym-time-tracker/releases/tag/v0.3)| Testing property of vue router (Lazy Loading Routes, Navigation Guards... ) | ✅ |
+|[v0.3.0](https://github.com/younesmjl/ym-time-tracker/releases/tag/v0.3)| Testing property of vue router (Lazy Loading Routes, Navigation Guards, History modes... ) | ✅ |
 |[v0.4.x](https://github.com/younesmjl/ym-time-tracker/releases/tag/v0.4.1)| Add State Management with VueX (Actions, Mutations, Getters, Modules...)| ✅ |
 |[v0.5.x](https://github.com/younesmjl/ym-time-tracker/releases/tag/v0.5.1)| Testing features (Slots, Mixin, Compositions API...) | ✅ |
 |[v0.6.0](https://github.com/younesmjl/ym-time-tracker/releases/tag/v0.6)| Form validation with vuelidate | ✅ |
