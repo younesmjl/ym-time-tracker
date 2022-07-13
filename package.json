@@ -15,7 +15,7 @@
     "axios": "0.23.0",
     "element-plus": "1.1.0-beta.24",
     "firebase": "9.6.10",
-    "vue": "3.2.31",
+    "vue": "3.2.37",
     "vue-router": "4.0.12",
     "vuex": "4.0.2"
   },
@@ -26,7 +26,7 @@
     "@commitlint/cz-commitlint": "16.2.3",
     "@vitejs/plugin-vue": "1.10.2",
     "@vue/babel-plugin-jsx": "1.1.1",
-    "@vue/compiler-sfc": "3.2.31",
+    "@vue/compiler-sfc": "3.2.37",
     "commitizen": "4.2.4",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.5.0",
